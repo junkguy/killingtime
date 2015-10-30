@@ -1,0 +1,6 @@
+# Foley description for thermal detonator
+enterwater	empty.wav
+enterwaterslow	empty.wav
+hithard		sgshell.wav
+hitmetal	sgshell.wav
+

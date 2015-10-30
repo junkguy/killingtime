@@ -1,0 +1,337 @@
+# Jedi Knight Cog Script
+#
+# CLIENT_M4.COG
+#
+# By ID_Junkguy, original cog by Zagibu
+
+symbols
+
+thing		player				local
+thing		oHunter				local
+thing		nHunter=-1			local
+thing		killer				local
+thing		victim				local
+
+template	fx=+smoke			local
+
+model		oModel				local
+model		nModel=mrtime.3do			local
+model		dModel=ky.3do			local
+
+sound		rSound=rocketengine.wav		local
+sound		warning=beep2.wav		local
+sound		offSound=deactivate03.wav	local
+
+int		rIndex=0			local
+int		doubleCall=0			local
+
+message		startup
+message		killed
+message		timer
+message		trigger
+message		leave
+message		damaged
+
+end
+
+# ========================================================================================
+
+code
+
+startup:
+	player = GetLocalPlayerThing();
+
+	// Catch this player's messages
+	CaptureThing(player);
+
+        // Model check timer
+	SetTimerEx(1, 10902, player, -1);
+
+	// Start "Bountyhunt" after delay
+	if(isServer())
+	{
+		// Enable manual scoring system
+		SetMultiModeFlags(0x4);
+
+		// Start bountyhunt timer
+		SetTimerEx(3, 10901, player, -1);
+	} else {
+	        // indicate player joined (so deagles pup can be set if needed)
+	        SetTimerEx(2, 10904, player, -1);
+	}
+
+
+	// Set this item available
+	SetInv(player, 48, 1);
+	SetInvAvailable(player, 48, 1);
+	
+	Return;
+
+# ........................................................................................
+
+killed:
+
+	// Only forward kill messages of local player
+	victim = GetSenderRef();
+	if ( victim == GetLocalPlayerThing() ) {
+ 	   SendTrigger(-1, 10912, GetThingParent(GetSourceRef()), victim, -1, -1);
+	}
+
+	Return;
+
+# ........................................................................................
+
+timer:
+	player = GetParam(0);
+
+        // Start bountyhunt timer
+	if(GetSenderId() == 10901)
+		SendTrigger(-1, 10911, player, -1, -1, -1);
+
+	// Model check timer
+	if(GetSenderId() == 10902)
+	{
+		if(GetThingModel(player) == nModel)
+		{
+			// Warning beep local
+			PlaySoundLocal(warning, 1, 0, 0x4);
+
+			Print("Player model reset to default");
+			SendTrigger(-1, 10910, player, -1, -1, -1);
+		}
+	}
+
+	// Double call prevention timer
+	if(GetSenderId() == 10903)
+		doubleCall = 0;
+
+        // new client join timer
+        if(GetSenderId() == 10904)
+                SendTrigger(-1, 13372, player, 0, 0, 0);
+
+	Return;
+
+# ........................................................................................
+
+trigger:
+	// Cache trigger parameters
+	killer = GetParam(0);
+	victim = GetParam(1);
+
+	// Force Model change trigger (startup message)
+	if(GetSourceRef() == 10910)
+		SetThingModel(killer, dModel);
+
+	// Sync nHunter variable trigger (trigger message)
+	if(GetSourceRef() == 10940)
+	{
+		nHunter = GetParam(0);
+
+		if(nHunter == GetLocalPlayerThing())
+		{
+			// Set local player as Mr Time
+			SetInv(nHunter, 123, 1.0);
+			
+			// Set Weapons for local MR TIME
+			SetInv(nHunter, 1, 1.0);
+			SetInv(nHunter, 2, 1.0);
+			// auto-select weapon here to force deselection of existing gun
+			SelectWeapon(nHunter, AutoSelectWeapon(nHunter, 1));
+  			SetInv(nHunter, 3, 0.0);
+  			SetInv(nHunter, 4, 9.0);
+  			SetInv(nHunter, 5, 0.0);
+  			SetInv(nHunter, 6, 0.0);
+  			SetInv(nHunter, 7, 0.0);
+  			SetInv(nHunter, 8, 0.0);
+   			SetInv(nHunter, 9, 0.0);
+   			SetInv(nHunter, 10, 1.0);
+
+			SetInv(nHunter, 118, 0.0); //m4
+			SetInv(nHunter, 120, 0.0); //deagle
+			SetInv(nHunter, 125, 0.0); //raffaello
+			SetInv(nHunter, 126, 0.0); //double deagles
+
+                        SetInv(nHunter, 21, 8); // enable high jump
+                        SetInvAvailable(nHunter, 21, 1);
+
+			SetFireWait(nHunter, -1);
+   			SetMountWait(nHunter, 0);
+   			SetCurInvWeapon(nHunter, 0);
+
+   			// Set BT amount
+                        SetInv(nHunter, 116, 15);
+		}
+		else
+		{
+			// Set local player as NOT Mr Time (but don't adjust guns, since previous Mr Time will be respawning anyways)
+			SetInv(GetLocalPlayerThing(), 123, 0.0);
+		}
+
+                // Locally print new hunter text message
+		jkStringClear();
+		jkStringConcatPlayerName(nHunter);
+		jkStringConcatAsciiString(" is now Mr Time!");
+		jkStringOutput(GetLocalPlayerThing(), -1);
+	}
+	
+	// Sync nHunter variable trigger (trigger message) WITHOUT changing hunter - used to update animations when new player joins (for new player only)
+	if(GetSourceRef() == 10941 && killer == GetLocalPlayerThing())
+	{
+	        nHunter = GetParam(1);
+
+		// New hunter text message
+		jkStringClear();
+		jkStringConcatPlayerName(nHunter);
+		jkStringConcatAsciiString(" is Mr Time!");
+		jkStringOutput(GetLocalPlayerThing(), -1);
+
+		// animations are updated in client_guns
+	}
+
+	if(!isServer())
+		Return;
+
+	if(GetSourceRef() == 13372) { // a player joined
+                // on server, broadcast who is mr time (broadcast intended for the new player)
+                SendTrigger(-1, 10941, killer, nHunter, 0, 0);
+	}
+
+	// New hunter trigger (startup message)
+	if(GetSourceRef() == 10911)
+	{
+		// Create new hunter
+		nHunter = killer;
+
+		// Sync nHunter variable
+		SendTrigger(-1, 10940, killer, -1, -1, -1);
+
+		oModel = GetThingModel(nHunter);
+		SetThingModel(nHunter, nModel);
+
+		// Warning beep global
+		PlaySoundGlobal(warning, 1, 0, 0x4);
+	}
+
+	// Kill trigger (killed message)
+	if(GetSourceRef() == 10912)
+	{
+		// Check double call
+		if(doubleCall == 1)
+			Return;
+
+		doubleCall = 1;
+		SetTimerEx(1, 10903, -1, -1);
+
+		// Suicide	
+		if(killer == victim)
+		{
+			SetPlayerScore(victim, GetPlayerScore(victim) - 1);
+
+			// Hunter suicide
+			if(victim == nHunter)
+			{
+                              if(GetNumPlayers() > 1)
+                              {
+                                   // Get new random hunter
+				   rIndex = Rand() * GetNumPlayers();
+				   // while index out of bounds or chose the original hunter, try again
+				   while( (rIndex == GetNumPlayers()) || ( (GetNumPlayers() > 1) && (GetPlayerThing(rIndex) == victim) ) )
+					rIndex = Rand() * GetNumPlayers();
+				   killer = GetPlayerThing(rIndex);
+                              }
+			}
+		}
+
+		// Kill
+		else
+		{
+			SetPlayerScore(killer, GetPlayerScore(killer) + 1);
+
+			// Add score for hunter
+			if(victim == nHunter)
+			{
+				SetPlayerScore(killer, GetPlayerScore(killer) + 2);
+			}
+		}
+
+		// Hunter died
+		if((victim == nHunter) && (GetNumPlayers() > 1))
+		{
+			// Reset old hunter
+			oHunter = victim;
+			SetThingModel(oHunter, oModel);
+
+			if(GetThingType(killer) != 10)
+			{
+				// Get new random hunter
+				rIndex = Rand() * GetNumPlayers();
+				// while index out of bounds or chose the original hunter, try again
+				while( (rIndex == GetNumPlayers()) || ( (GetNumPlayers() > 1) && (GetPlayerThing(rIndex) == victim) ) )
+					rIndex = Rand() * GetNumPlayers();
+				killer = GetPlayerThing(rIndex);
+			}
+
+			// Create new hunter
+			nHunter = killer;
+
+			// Sync nHunter variable
+			SendTrigger(-1, 10940, killer, -1, -1, -1);
+
+			oModel = GetThingModel(nHunter);
+			SetThingModel(nHunter, nModel);
+
+			// Warning beep global
+			PlaySoundGlobal(warning, 1, 0, 0x4);
+
+                        // Turn off the Killing Time
+	                SendTrigger(-1, 13370, 0, 0, 0, 0);
+		}
+	}
+
+	// Hunter left trigger (leave message)
+	if((GetSourceRef() == 10921) && (killer == nHunter))
+	{
+		// Get new random hunter
+		rIndex = Rand() * GetNumPlayers();
+	        // while index out of bounds or chose the original hunter, try again
+		while( rIndex == GetNumPlayers() || (GetNumPlayers() > 1 && GetPlayerThing(rIndex) == victim) )
+			rIndex = Rand() * GetNumPlayers();
+		killer = GetPlayerThing(rIndex);
+
+		// Create new hunter
+		nHunter = killer;
+
+		oModel = GetThingModel(nHunter);
+		SetThingModel(nHunter, nModel);
+
+		// Sync nHunter variable
+		SendTrigger(-1, 10940, killer, -1, -1, -1);
+
+		// Warning beep global
+		PlaySoundGlobal(warning, 1, 0, 0x4);
+
+		// Turn off the Killing Time
+		SendTrigger(-1, 13370, 0, 0, 0, 0);
+	}
+
+	Return;
+
+# ........................................................................................
+
+leave:
+	SendTrigger(-1, 10921, GetSenderRef(), -1, -1, -1);
+
+	Return;
+
+# ........................................................................................
+
+damaged:
+	// Hunter has armor
+	// if(GetSenderRef() == nHunter)
+	// 	ReturnEx(GetParam(0) / 2);
+	// else
+		ReturnEx(GetParam(0));
+
+	Return;
+
+end

@@ -1,0 +1,32 @@
+# Jedi Knight Cog Script
+
+flags=0x240
+
+symbols
+
+message     created
+message     pulse
+
+end
+
+# ========================================================================================
+
+code
+created:
+   SetThingPulse(GetSenderRef(), 0.01);
+
+   Return;
+
+# ........................................................................................
+
+pulse:
+
+   if(GetInv(GetLocalPlayerThing(), 123) == 1.0) {
+      DestroyThing(GetSenderRef());
+   }
+
+   Return;
+
+end   
+
+

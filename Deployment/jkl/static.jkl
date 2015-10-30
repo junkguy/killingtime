@@ -1,0 +1,264 @@
+#********** Killing Time - by ID_Junkguy - 2004 **********
+
+#### Copyright information #####
+SECTION: COPYRIGHT
+................................
+................@...@...@...@...
+.............@...@..@..@...@....
+................@.@.@.@.@.@.....
+@@@@@@@@......@...........@.....
+@@@@@@@@....@@......@@@....@....
+@@.....@.....@......@@@.....@@..
+@@.@@@@@......@.....@@@......@@.
+@@@@@@@@.......@....@@.....@@...
+@@@@@@@@.........@@@@@@@@@@.....
+@@@@@@@@..........@@@@@@........
+@@.....@..........@@@@@.........
+@@.@@@@@.........@@@@@@.........
+@@.....@.........@@@@@@.........
+@@@@@@@@.........@@@@@@.........
+@@@@@@@@.........@@@@@@@........
+@@@...@@.........@@@@@@@........
+@@.@@@.@.........@.....@........
+@@..@..@........@.......@.......
+@@@@@@@@........@.......@.......
+@@@@@@@@.......@........@.......
+@@..@@@@.......@........@.......
+@@@@..@@......@.........@.......
+@@@@.@.@......@.........@.......
+@@....@@........................
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@.@@@@@@@@@@@@@@@@@@
+@@.@@..@@@@@..@@@@@@@@@@.@@@@@@@
+@@.@.@.@@@@.@.@@@.@..@@...@@@..@
+@@..@@@@@@....@@@..@@@@@.@@@@.@@
+@@@@@@@@...@@.@@@.@@@@@..@@...@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@.copyright.(c).1997.lucasarts.@
+@@@@@@..entertainment.co..@@@@@@
+################################
+
+
+###### Header information ######
+SECTION: HEADER
+# version and global constant settings
+Version 1
+World Gravity 4.00
+Ceiling Sky Z    3.000000
+Horizon Distance 100.000000
+Horizon Pixels per Rev 768.000000
+Horizon Sky Offset   0.000000 0.000000
+Ceiling Sky Offset   0.000000 0.000000
+MipMap Distances	1.000000	2.000000	3.000000	4.000000
+LOD Distances		0.300000	0.600000	0.900000	1.200000
+Perspective distance 2.00
+Gouraud distance 2.00
+################################
+
+
+###### Sound information  ######
+SECTION: SOUNDS
+World sounds 60
+ric1.wav
+ric2.wav
+ric3.wav
+ric4.wav
+ssr.wav
+reload2.wav
+qjet.wav
+pistout1.wav
+end
+################################
+
+
+##### Material information #####
+SECTION: MATERIALS
+World materials 190
+end
+################################
+
+
+Section: Soundclass
+World soundclasses 11
+0:	ky.snd
+1:	ric1.snd
+2:	ric2.snd
+3:	ric3.snd
+4:	ric4.snd
+5:	exp_punch.snd
+6:	shell.snd
+7:	exp_molotov.snd
+8:	molotovfly.snd
+9:	sgshell.snd
+10:	deagleclip.snd
+end
+
+###### Models information ######
+Section: MODELS
+
+World models 50
+
+0:	bryv.3do
+1:	bryg.3do
+2:	sabv.3do
+3:	sabg.3do
+4:	rldv.3do
+5;	rldg.3do
+6:	conv.3do
+7:	cong.3do
+8:	strv.3do
+9:	strg.3do
+10: rptv.3do
+11: rptg.3do
+12: detv.3do
+13: detg.3do
+14: seqv.3do
+15: seqg.3do
+16: fistv.3do
+17: fistg.3do
+18: bowv.3do
+19: bowg.3do
+20: ky.3do
+21: bry0.3do
+22: con0.3do
+23: dflt.3do
+24: rep0.3do
+25: det0.3do
+26: seqp.3do
+27: rld0.3do
+28: invis.3do
+29: molotov0.3do
+end
+################################
+
+
+###### Sprite information ######
+Section: SPRITES
+
+World sprites 20
+0: bryx.spr
+1: detx.spr
+2: bowx2.spr
+3: bowx.spr
+4: rptx.spr
+5: seqx2.spr
+6: debrisx.spr
+7: rldx.spr
+8: conx.spr
+end
+################################
+
+
+##### Keyframe information #####
+Section: KEYFRAMES
+
+World keyframes 128
+end
+################################
+
+
+###### Animation Classes #######
+Section: ANIMCLASS
+
+World puppets 16
+0:	ky.pup
+end
+################################
+
+
+########## COG scripts #########
+Section: cogscripts
+World scripts 100
+0: reactionsparks.cog
+1: molotovtrail.cog
+2: molotovexp.cog
+end
+################################
+
+
+######### COG placement ########
+Section: cogs
+World cogs 100
+#Num	Script          Symbol values
+end
+################################
+
+########Templates###############
+Section: templates
+
+World templates 400
+
+_graphook1       none             orient=(0.000000/0.000000/0.000000) type=weapon collide=1 move=physics thingflags=0x20000000 mass=5.000000 physflags=0x200 maxrotvel=90.000000 damageclass=0x2 typeflags=0x1 
++crosshair      _graphook1          sprite=crosshair.spr size=0.001 maxvel=0 vel=(0/0/0) timer=0.01 thingflags=0 damageclass=0 movesize=0.001 typeflags=0x000
+
+_uexplosion       none             orient=(0.000000/0.000000/0.000000) type=explosion typeflags=0x1 damageclass=0x4 
++ulgflash         _uexplosion        thingflags=0x1 light=0.500000 timer=0.200000 typeflags=0x12 blasttime=0.200000 maxlight=1.000000
+_uweapon          none             orient=(0.000000/0.000000/0.000000) type=weapon collide=1 move=physics thingflags=0x20000000 timer=10.000000 mass=5.000000 physflags=0x200 maxrotvel=90.000000 damageclass=0x2 typeflags=0x1 
+
++bloodsplat        _uweapon          timer=5.000000 model3d=bloodsmall4.3do size=0.001895 movesize=0.001895 surfdrag=5.000000 airdrag=0.800000 mass=0.070000 physflags=0x29d vel=(0.000000/0.900000/0.000000) angvel=(180.000000/180.000000/0.000000) buoyancy=0.250000 damageclass=0x4 typeflags=0x40380 thingflags=0x0
++blooddrop   	none   	     orient=(0.000000/0.000000/0.000000) thingflags=0x400 type=weapon move=physics timer=5.0 model3d=blooddrop.3do collide=1 airdrag=0.080000 physflags=0x1 mass=2.000000 typeflags=0x4030d vel=(0.000000/0.500000/0.000000) size=0.005000 movesize=0.005000 cog=bloodsplat.cog
+
++bloodspecks          none             orient=(0.000000/0.000000/0.000000) type=particle move=physics timer=0.040000 mass=0.010000 physflags=0x231 vel=(0.000000/0.000000/1.200000) typeflags=0x1f material=bloody.mat range=0.050000 rate=256.000000 maxthrust=30.000000 elementsize=0.001500 count=256
++bloodflecks         none             orient=(0.000000/0.000000/0.000000) type=particle move=physics timer=0.040000 mass=0.020000 physflags=0x231 vel=(0.000000/0.000000/0.600000) typeflags=0x1f material=bloody.mat range=0.020000 rate=256.000000 maxthrust=15.000000 elementsize=0.002500 count=256 creatething=+bloodspecks
++bullethitflesh      none             orient=(0.000000/0.000000/0.000000) type=particle timer=0.040000 typeflags=0x3f material=bloody.mat range=0.010000 rate=512.000000 maxthrust=20.000000 elementsize=0.002000 count=256 creatething=+bloodflecks
+
++realsparks      none             orient=(0.000000/0.000000/0.000000) type=particle timer=0.080000 typeflags=0x3f material=sparky.mat range=0.010000 rate=32.000000 maxthrust=20.000000 elementsize=0.002500 count=16 
++bullethitsmoke           none             orient=(0.000000/0.000000/0.000000) type=particle move=physics timer=2.000000 physflags=0x20000 vel=(0.000000/0.000000/0.020000) angvel=(10.000000/10.000000/10.000000) typeflags=0x3e material=00gsmoke.mat range=0.030000 elementsize=0.002000 count=32 
++bullethitsparks           none             orient=(0.000000/0.000000/0.000000) type=particle move=physics timer=1.000000 physflags=0x20000 vel=(0.000000/0.000000/-0.040000) angvel=(0.000000/0.000000/0.000000) typeflags=0x3e material=00gsmoke.mat range=0.012000 elementsize=0.002000 count=16 
++realbullethit1     _uexplosion      thingflags=0x401 light=0.000000 timer=10.000000 sprite=bullethole.spr soundclass=ric1.snd typeflags=0x33 blasttime=0.1500000 maxlight=0.000000 creatething=+bullethitsmoke cog=bulletdust.cog
++bullethit1     _uexplosion      thingflags=0x1 light=0.000000 timer=0.010000 typeflags=0x33 blasttime=0.1500000 maxlight=0.000000 creatething=+bullethitsparks debris=+realbullethit1 debris=+realsparks
++bullet5    _uweapon            thingflags=0x20000001 light=0.400000 model3d=invis.3do size=0.010000 movesize=0.010000 vel=(0.000000/100.000000/0.000000) explode=+bullethit1 fleshhit=+bullethitflesh damage=200.000000 mindamage=200.000000 damageclass=0x2 typeflags=0x20440d rate=1.000000 range=15.000000
+
++uwhitecloud      none             orient=(0.000000/0.000000/0.000000) type=particle timer=0.200000 typeflags=0x3f material=00gsmoke.mat range=0.020000 rate=128.000000 maxthrust=30.000000 elementsize=0.007000 count=128 
++udustcloud       +uwhitecloud      timer=0.120000 material=dusty.mat range=0.015000 rate=256.000000 maxthrust=80.000000 elementsize=0.010000 
++upunchcloud      +udustcloud       timer=0.150000 material=00gsmoke.mat range=0.006000 rate=64.000000 maxthrust=4.000000 elementsize=0.004000 count=16 
++ubloodcloud      +udustcloud       timer=0.001000 material=bloody.mat range=0.030000 rate=256.000000 maxthrust=8.000000 elementsize=0.010000 count=64 
++upunch_exp       _uexplosion       timer=0.001000 soundclass=exp_punch.snd creatething=+upunchcloud typeflags=0x0 
++ublood_exp       _uexplosion       timer=0.001000 soundclass=exp_punch.snd creatething=+ubloodcloud typeflags=0x0 
++upunch           _uweapon          size=0.001000 movesize=0.001000 mass=50.000000 explode=+upunch_exp fleshhit=+ublood_exp damage=40.000000 damageclass=0x1 typeflags=0x200d range=0.150000 force=600.000000
+
++rifleshell     _uweapon         orient=(0.000000/90.000000/0.000000) timer=3.000000 soundclass=shell.snd model3d=rifleshell.3do size=0.010000 movesize=0.010000 surfdrag=2.000000 airdrag=0.700000 mass=1.000000 physflags=0x225 vel=(0.300000/0.00000/0.50000) buoyancy=0.200000 typeflags=0x40309 angvel=(360.000000/360.000000/360.000000)
++bulletshell     _uweapon         orient=(0.000000/90.000000/0.000000) timer=3.000000 soundclass=shell.snd model3d=bulletshell.3do size=0.010000 movesize=0.010000 surfdrag=2.000000 airdrag=0.700000 mass=1.000000 physflags=0x225 vel=(0.300000/0.00000/0.50000) buoyancy=0.200000 typeflags=0x40309 angvel=(360.000000/360.000000/360.000000)
++shotgunshell     _uweapon         orient=(0.000000/90.000000/0.000000) timer=3.000000 soundclass=sgshell.snd model3d=shotgunshell.3do size=0.010000 movesize=0.010000 surfdrag=2.000000 airdrag=0.700000 mass=1.000000 physflags=0x225 vel=(0.300000/0.00000/0.50000) buoyancy=0.200000 typeflags=0x40309 angvel=(360.000000/360.000000/360.000000)
+
++smallpuff           none             orient=(0.000000/0.000000/0.000000) type=particle move=physics timer=0.050000 mass=0.000100 physflags=0x231 vel=(0.000000/0.000000/0.200000) typeflags=0x3f material=greydust.mat range=0.010000 rate=64.000000 maxthrust=20.000000 elementsize=0.002000 count=64
++reactionsparks      none             orient=(0.000000/0.000000/0.000000) type=particle move=physics timer=0.060000 mass=0.010000 physflags=0x231 vel=(0.000000/-1.500000/0.000000) typeflags=0x1f material=orangesparks.mat range=0.020000 rate=64.000000 maxthrust=10.000000 elementsize=0.001500 count=64
++upsparks            none             orient=(0.000000/0.000000/0.000000) type=particle move=physics timer=0.090000 mass=0.050000 physflags=0x231 vel=(0.000000/0.000000/1.000000) typeflags=0x1f material=greydust.mat range=0.030000 rate=48.000000 maxthrust=15.000000 elementsize=0.003000 count=128
+
++exitsmallpuff           none             orient=(0.000000/0.000000/0.000000) type=particle move=physics timer=0.050000 mass=0.000100 physflags=0x231 vel=(0.000000/0.000000/0.200000) typeflags=0x3f material=bloody.mat range=0.010000 rate=64.000000 maxthrust=20.000000 elementsize=0.002000 count=64
++exitrealbullethit     _uexplosion      thingflags=0x401 light=0.000000 timer=5.000000 sprite=exitbullethole.spr typeflags=0x33 blasttime=0.1500000 maxlight=0.000000
++exitbullethit     _uexplosion      thingflags=0x1 light=0.000000 timer=0.010000 typeflags=0x33 blasttime=0.1500000 maxlight=0.000000 debris=+exitrealbullethit cog=bulletric.cog
++exitbullet    _uweapon            thingflags=0x20000001 light=0.400000 model3d=blooddrop.3do size=0.010000 movesize=0.010000 vel=(0.000000/10.000000/0.000000) explode=+exitbullethit fleshhit=+bullethitflesh damage=5.000000 mindamage=5.000000 damageclass=0x2 typeflags=0x20440d rate=1.000000 range=15.000000 cog=exitbulletsparks.cog
+
++ugwrealbullethit1     _uexplosion      thingflags=0x401 light=0.000000 timer=5.000000 sprite=bullethole.spr typeflags=0x33 blasttime=0.1500000 maxlight=0.000000
++ugwbullethit1     _uexplosion      thingflags=0x1 light=0.000000 timer=0.010000 typeflags=0x33 blasttime=0.1500000 maxlight=0.000000 debris=+ugwrealbullethit1 cog=bulletric.cog
++ugwbullet1    _uweapon            thingflags=0x20000001 light=0.400000 model3d=str0.3do size=0.010000 movesize=0.010000 creatething=+ulgflash vel=(0.000000/10.000000/0.000000) explode=+ugwbullethit1 fleshhit=+bullethitflesh damage=35.000000 mindamage=30.000000 damageclass=0x2 typeflags=0x20440d rate=1.000000 range=15.000000 cog=reactionsparks.cog
+
++m4bullet         +ugwbullet1            vel=(0.000000/11.000000/0.000000) damage=45.000000 mindamage=35.000000
++deaglebullet     +ugwbullet1            vel=(0.000000/9.000000/0.000000) damage=55.000000 mindamage=30.000000
++shotgunbullet    +ugwbullet1            vel=(0.000000/9.000000/0.000000) damage=40.000000 mindamage=25.000000
+
+_vmodels           none        orient=(0.000000/0.000000/0.000000) type=actor collide=1 move=physics thingflags=0x20000000 mass=150.000000 physflags=0x4a4f maxrotvel=200.000000 maxvel=1.000000 health=40.00 maxhealth=40.00 maxrotthrust=180.00 jumpspeed=1.50 eyeoffset=(0.000000/0.000000/0.037000) minheadpitch=-80.00 maxheadpitch=89.50 lightoffset=(0.000000/0.070000/0.040000) lightintensity=0.80
++deagletemp       _vmodels       model3d=strv.3do collide=0  puppet=ky.pup typeflags=0x1 thingflags=0x20000400 cog=weaponpulse.cog
++lghost           none        orient=(0/0/0) type=ghost move=path timer=0.002 collide=0
+
++cameraghost           none        orient=(0/0/0) type=ghost move=path timer=602.000 collide=0
+
++molotovsmalldamage     _uexplosion        thingflags=0x1 light=0.200000 timer=0.300000 typeflags=0x14 damage=30.000000 blasttime=0.300000 force=10.000000 maxlight=0.200000 range=0.350000
++molotovmediumdamage     _uexplosion        thingflags=0x1 light=0.200000 timer=0.300000 typeflags=0x14 damage=50.100000 blasttime=0.300000 force=20.000000 maxlight=0.400000 range=0.500000
++molotovbigdamage     _uexplosion        thingflags=0x1 light=0.200000 timer=0.300000 typeflags=0x14 damage=100.100000 blasttime=0.300000 force=40.000000 maxlight=0.600000 range=0.650000
+
++molotovtrail           none              orient=(0.000000/0.000000/0.000000) type=particle move=physics timer=0.800000 physflags=0x20000 vel=(0.000000/0.000000/0.120000) angvel=(0.000000/90.000000/0.000000) typeflags=0x3e material=00explosion.mat range=0.030000 elementsize=0.002000 count=16
++usmoke           none              orient=(0.000000/0.000000/0.000000) type=particle move=physics timer=0.800000 physflags=0x20000 vel=(0.000000/0.000000/0.120000) angvel=(0.000000/90.000000/0.000000) typeflags=0x3e material=00gsmoke.mat range=0.030000 elementsize=0.005000 count=8
++molotov_exp_swirly      +usmoke            typeflags=0x3e timer=1.000000 range=0.170000 rate=128.000000 count=256 material=firey.mat vel=(0.000000/0.000000/0.200000) angvel=(0.000000/0.000000/90.000000) 
++molotov_exp_flame      +usmoke            typeflags=0x3e timer=1.000000 range=0.100000 rate=64.000000 count=64 material=firey.mat vel=(0.000000/0.000000/0.200000) angvel=(0.000000/90.000000/0.000000)
++molotov_exp_smallflame      +usmoke       typeflags=0x3e timer=1.000000 range=0.070000 rate=32.000000 count=32 material=firey.mat vel=(0.000000/0.000000/0.200000) angvel=(0.000000/90.000000/0.000000) elementsize=0.004000 
++molotov_exp_cloud       +udustcloud        typeflags=0x3f material=firey.mat range=0.060000 rate=128.000000 maxthrust=10.000000 count=256 elementsize=0.007000 timer=0.300000
++molotov_exp_ring      +udustcloud        typeflags=0x3f rate=128.000000 maxthrust=30.000000 count=256 minsize=0.005000 pitchrange=10.000000 elementsize=0.005000 material=firey.mat creatething=+ufirecloud timer=0.030000 
++molotov_exp     _uexplosion        thingflags=0x1 light=0.200000 timer=4.000000 typeflags=0x14 soundclass=exp_molotov.snd damage=0.100000 blasttime=0.700000 force=1.000000 maxlight=0.100000 range=0.450000 cog=molotovexp.cog
++molotov2        _uweapon           timer=3.000000 model3d=molotov0.3do size=0.014895 movesize=0.014895 soundclass=molotovfly.snd surfdrag=3.000000 airdrag=0.800000 mass=1.000000 physflags=0x225 vel=(0.000000/2.000000/1.500000) angvel=(90.000000/45.000000/90.000000) buoyancy=0.250000 explode=+molotov_exp fleshhit=+molotov_exp damageclass=0x4 typeflags=0x40309 cog=molotovtrail.cog
++molotov1        +molotov2         timer=10.000000 typeflags=0x4030d
+
++deagleclip     _uweapon         orient=(0.000000/0.000000/0.000000) timer=3.000000 soundclass=deagleclip.snd model3d=deagleclip.3do size=0.010000 movesize=0.010000 surfdrag=7.000000 airdrag=0.700000 mass=1.000000 physflags=0x45 vel=(0.000000/-0.40000/0.00000) buoyancy=0.200000 typeflags=0x40309
+
+end

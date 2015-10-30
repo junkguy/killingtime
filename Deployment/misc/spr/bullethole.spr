@@ -1,0 +1,2 @@
+#material	type	width	height  geo     light   tex	extralight	xoff    yoff	zoff
+bullethole.mat		0		0.025	0.025     4       0       0  	0.0       	0.0    0.0	0.0

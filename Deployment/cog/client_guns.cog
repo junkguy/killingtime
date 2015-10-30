@@ -1,0 +1,294 @@
+# Jedi Knight Cog Script
+#
+# Clientcog.COG
+#
+# Client cog for SSR 4000 by ID_Junkguy
+#      
+# This Cog is Not supported by LucasArts Entertainment Co
+
+flags=0x240
+
+symbols
+
+flex        random                           local
+template    ugw1=+deaglebullet                 local
+template    shotgunbullet=+shotgunbullet                 local
+template    bulletshell=+bulletshell                 local
+template    rifleshell=+rifleshell                 local
+template    shotgunshell=+shotgunshell             local
+template    molotovproj=+molotov1          local
+template    deagleclip=+deagleclip            local
+
+model       kydeagles=mrtimedeagles.3do            local
+model       kynormal=mrtime.3do            local
+
+sound       reloadRegSound=deaglerldsnd.wav        local
+sound       bt1s=bt1.wav                        local
+sound       bt2s=bt2.wav                        local
+sound       bt3s=bt3.wav                        local
+
+sound       dereloadSound=deaglerldsnd.wav        local
+sound       demountSound=deaglemntsnd.wav         local
+sound       defireSound=deagleshoot.wav           local
+
+sound       rafreloadSound=deaglerldsnd.wav        local
+sound       rafmountSound=deaglemntsnd.wav         local
+sound       raffireSound=raffaelloshoot.wav           local
+
+int         channel=-1                        local
+
+int         i                                  local
+
+int		thesource					local
+thing       player                          local
+vector      randVec6                             local          
+vector      randDir6                             local          
+message         trigger
+
+end
+
+# ========================================================================================
+
+code
+
+trigger:
+
+thesource=GetSourceRef();
+
+
+	if(thesource == 20)
+	{
+		player=GetParam(0);
+
+		//if(GetDebugModeFlags() & 0x400) PlaySoundThing(slowssrsound, GetParam(0), 1, -1, -1, 0x80);
+		//else PlaySoundThing(fireSound, GetParam(0), 1, -1, -1, 0x80);
+
+		randDir6 = VectorSet((Rand()-0.5)*8, ((Rand()-0.5)*8)+90, 0.0);
+		FireProjectile(player, bulletshell, -1, -1, '0.023 0.04 0.02', randDir6, 1, 0x20, -1, -1);
+
+		randVec6 = VectorSet((Rand()-0.5)*1.0, (Rand()-0.5)*1.0, 0.0);
+
+		FireProjectile(player, ugw1, -1, -1, '0.0145 0.0624 0.028', randVec6, 1, 0x20, -1, -1);
+
+
+		channel = -1;
+		if(channel == -1)
+		{
+			channel = PlaySoundThing(defireSound, player, 0.0, -1, -1, 0x180);
+			if(channel != -1)
+			{ 
+				if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(channel, 0.35+(Rand()*0.1), 0.01);
+				else ChangeSoundPitch(channel, 0.95+(Rand()*0.1), 0.01);
+				ChangeSoundVol(channel, 1.0, 0.01);
+			}
+		}
+
+	}
+	else if(thesource == 21) //de reload
+	{
+
+		channel = -1;
+		if(channel == -1)
+		{
+			channel = PlaySoundThing(dereloadSound, GetParam(0), 1, -1, -1, 0x80);
+			if(channel != -1)
+			{ 
+				if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(channel, 0.20, 0.01);
+				else ChangeSoundPitch(channel, 1.00, 0.01);
+				ChangeSoundVol(channel, 1.0, 0.01);
+			}
+		}
+
+	}
+	else if(thesource == 22) //de mount
+	{
+
+		channel = -1;
+		if(channel == -1)
+		{
+			channel = PlaySoundThing(demountSound, GetParam(0), 1.0, -1.0, -1.0, 0x80);
+			if(channel != -1)
+			{ 
+				if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(channel, 0.20, 0.01);
+				else ChangeSoundPitch(channel, 1.00, 0.01);
+				ChangeSoundVol(channel, 1.0, 0.01);
+			}
+		}
+
+	}
+
+
+
+
+else if(thesource == 30) //de double shoot
+{
+
+player=GetParam(0);
+
+// right
+randDir6 = VectorSet((Rand()-0.5)*15, ((Rand()-0.5)*15)+90, 0.0);
+FireProjectile(player, bulletshell, -1, -1, '0.025 0.08 0.035', randDir6, 1, 0x20, -1, -1);
+randVec6 = VectorSet((Rand()-0.5)*5.0, (Rand()-0.5)*5.0, 0.0);
+FireProjectile(player, ugw1, -1, -1, '0.025 0.09 0.025', randVec6, 1, 0x20, -1, -1);
+
+channel = -1;
+if(channel == -1)
+{
+	channel = PlaySoundThing(defireSound, player, 0.0, -1, -1, 0x180);
+	if(channel != -1)
+	{ 
+		if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(channel, 0.35+(Rand()*0.1), 0.01);
+		else ChangeSoundPitch(channel, 0.95+(Rand()*0.1), 0.01);
+		ChangeSoundVol(channel, 1.0, 0.01);
+	}
+}
+
+Sleep(0.1);
+
+// left
+randDir6 = VectorSet((Rand()-0.5)*15, ((Rand()-0.5)*15)+90, 0.0);
+FireProjectile(player, bulletshell, -1, -1, '-0.025 0.08 0.035', randDir6, 1, 0x20, -1, -1);
+randVec6 = VectorSet((Rand()-0.5)*5.0, (Rand()-0.5)*5.0, 0.0);
+FireProjectile(player, ugw1, -1, -1, '-0.025 0.09 0.025', randVec6, 1, 0x20, -1, -1);
+
+channel = -1;
+if(channel == -1)
+{
+	channel = PlaySoundThing(defireSound, player, 0.0, -1, -1, 0x180);
+	if(channel != -1)
+	{ 
+		if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(channel, 0.35+(Rand()*0.1), 0.01);
+		else ChangeSoundPitch(channel, 0.95+(Rand()*0.1), 0.01);
+		ChangeSoundVol(channel, 1.0, 0.01);
+	}
+}
+
+}
+
+
+
+else if(thesource == 31) // de double reload spin
+{
+   player=GetParam(0);
+
+   random = Rand();
+   if(random <= 0.34) PlaySoundThing(bt1s, player, 1, -1, -1, 0x80);
+   else if(random <= 0.67) PlaySoundThing(bt2s, player, 1, -1, -1, 0x80);
+   else PlaySoundThing(bt3s, player, 1, -1, -1, 0x80);
+   
+   Sleep(0.03);
+   FireProjectile(player, deagleclip, -1, -1, '-0.06 -0.05 0.0', '0.0 -70.0 0.0', 1, 0x20, -1, -1);
+   FireProjectile(player, deagleclip, -1, -1, '0.06 0.05 0.0', '0.0 110.0 0.0', 1, 0x20, -1, -1);
+}
+
+else if(thesource == 32) // de double reload reg
+{
+   player=GetParam(0);
+
+   FireProjectile(player, deagleclip, -1, -1, '-0.07 0.05 0.02', '0.0 -90.0 0.0', 1, 0x20, -1, -1);
+   FireProjectile(player, deagleclip, -1, -1, '0.07 0.05 0.02', '0.0 90.0 0.0', 1, 0x20, -1, -1);
+
+   PlaySoundThing(reloadRegSound, player, 1, -1, -1, 0x80);
+
+}
+
+
+else if(thesource == 33) // set model and pup for deagles (when gun selected)
+{
+   player=GetParam(0);
+
+   SetThingModel(player, kydeagles);
+
+   ParseArg(player, "puppet=kydouble.pup");
+
+}
+else if(thesource == 10941) // update pup for current Mr Time (according to weapon) when new player joins
+{
+   player=GetParam(1);
+   if(GetThingModel(player) == kydeagles) {
+       ParseArg(player, "puppet=kydouble.pup");
+   }
+}
+else if(thesource == 34) // clear model andor pup from deagles
+{
+   player=GetParam(0);
+
+   if(GetParam(1) == 0) SetThingModel(player, kynormal);
+
+   ParseArg(player, "puppet=ky.pup");
+
+}
+
+
+
+
+	if(thesource == 70)
+	{
+		player=GetParam(0);
+
+		randDir6 = VectorSet((Rand()-0.5)*8, ((Rand()-0.5)*8)+90, 0.0);
+		FireProjectile(player, shotgunshell, -1, -1, '0.019 0.04 0.02', randDir6, 1, 0x20, -1, -1);
+
+            for(i=0; i<9; i=i+1)
+		{
+			randVec6 = VectorSet((Rand()-0.5)*6.0, (Rand()-0.5)*6.0, 0.0);
+			FireProjectile(player, shotgunbullet, -1, -1, '0.013 0.0624 0.028', randVec6, 1, 0x20, -1, -1);
+		}
+
+		channel = -1;
+		if(channel == -1)
+		{
+			channel = PlaySoundThing(raffireSound, player, 0.0, -1, -1, 0x180);
+			if(channel != -1)
+			{ 
+				if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(channel, 0.6+(Rand()*0.1), 0.01);
+				else ChangeSoundPitch(channel, 0.95+(Rand()*0.1), 0.01);
+				ChangeSoundVol(channel, 1.0, 0.01);
+			}
+		}
+
+	}
+	else if(thesource == 71) //raf reload
+	{
+
+		channel = -1;
+		if(channel == -1)
+		{
+			channel = PlaySoundThing(rafreloadSound, GetParam(0), 1, -1, -1, 0x80);
+			if(channel != -1)
+			{ 
+				if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(channel, 0.20, 0.01);
+				else ChangeSoundPitch(channel, 1.00, 0.01);
+				ChangeSoundVol(channel, 1.0, 0.01);
+			}
+		}
+
+	}
+	else if(thesource == 72) //raf mount
+	{
+
+		channel = -1;
+		if(channel == -1)
+		{
+			channel = PlaySoundThing(rafmountSound, GetParam(0), 1.0, -1.0, -1.0, 0x80);
+			if(channel != -1)
+			{ 
+				if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(channel, 0.20, 0.01);
+				else ChangeSoundPitch(channel, 1.00, 0.01);
+				ChangeSoundVol(channel, 1.0, 0.01);
+			}
+		}
+
+	}
+
+
+	else if(thesource == 41) //molotov proj
+	{
+
+      	FireProjectile(GetParam(0), molotovproj, -1, -1, '0.05 0 0', '0 0 0', GetParam(1), 0x1, 0.0, 0.0);
+
+	}
+
+	return;
+
+end

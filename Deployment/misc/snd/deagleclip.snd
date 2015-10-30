@@ -1,0 +1,11 @@
+# Foley description for thermal detonator
+enterwater	ploop01.wav
+enterwaterslow	ploop01.wav
+hithard		deagleclip.WAV
+hitmetal	deagleclip.WAV
+hitearth	deagleclip.WAV
+landhard	deagleclip.WAV
+landmetal       deagleclip.WAV
+landwater       deagleclip.WAV
+
+

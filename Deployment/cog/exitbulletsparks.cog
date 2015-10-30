@@ -1,0 +1,42 @@
+# Jedi Knight Cog Script
+#
+# by ID_Junkguy for Killing Time mod
+
+flags=0x240
+
+symbols
+
+message     damaged
+message     removed
+
+vector       bulletvel                        local
+vector	 randvec6				    local
+
+thing          dummy3                              local    
+
+int		damagerthing				local
+int		removerthing				local
+
+template	 projectile3=+exitsmallpuff        	local
+
+end
+
+# ========================================================================================
+
+code
+
+damaged:
+damagerthing=GetSenderRef();
+Return;
+
+removed:
+removerthing=GetSenderRef();
+if(damagerthing != removerthing)
+{
+dummy3 = FireProjectile(removerthing, projectile3, -1, -1, '0.0 0.0 0.0', '0 0 0', 1, 0x20, -1, -1);
+}
+Return;
+
+end
+
+

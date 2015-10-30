@@ -1,0 +1,199 @@
+# Jedi Knight Cog Script
+#
+# music.COG
+#
+# Music player and custom music selection.
+#
+# For SSR 4000 Pro / Killing Time DM
+#
+# By ID_Junkguy
+#
+# (c) 2001-2004 ID_Junkguy.
+
+flags=0x240
+symbols
+
+thing        player                             local                         
+sound        music0=lapone.wav            local
+sound        music0hi=magicstarhi.wav            local
+sound        xmusic1=music1.wav                  local                    
+sound        xmusic2=music2.wav                  local                    
+sound        xmusic3=music3.wav                  local                    
+sound        xmusic4=music4.wav                  local                    
+sound        xmusic5=music5.wav                  local                    
+sound        xmusic6=music6.wav                  local                    
+sound        xmusic7=music7.wav                  local                    
+sound        xmusic8=music8.wav                  local                    
+sound        xmusic9=music9.wav                  local                    
+sound        xmusicn10=music10.wav               local                    
+int          channel=-1                         local                         
+int          music=0                            local                         
+message      startup                                                                                                              
+message      activated                                                        
+
+end                                                                           
+
+# ========================================================================================
+
+code
+startup:
+
+   player = GetLocalPlayerThing();
+   music=0;
+   call stop_power;
+
+       Return;
+
+# ...........................................
+activated:
+
+if (music == 0)
+{
+music = 1;
+   call stop_power;
+channel = PlaySoundlocal(music0hi, 1.0, 0, 0x81);
+  if (channel == -1)
+  {
+    channel = PlaySoundlocal(music0, 1.0, 0, 0x81);
+     if (channel == -1) Print("Error: Can't play main song");
+     else Print("Playing Music");
+  }
+  else Print("Playing High Quality Music");
+return;
+}
+if(music == 1)
+{
+music = music+1;
+if (GetSoundLen(xmusic1) != 0.000000)
+  { 
+    call stop_power;
+    channel = PlaySoundlocal(xmusic1, 1.0, 0, 0x81);
+    Print("Playing Music 1"); 
+    return;
+  }
+}
+if(music == 2)
+{
+music = music+1;
+if (GetSoundLen(xmusic2) != 0.000000)
+  { 
+    call stop_power;
+    channel = PlaySoundlocal(xmusic2, 1.0, 0, 0x81);
+    Print("Playing Music 2"); 
+    return;
+  }
+}
+if(music == 3)
+{
+music = music+1;
+if (GetSoundLen(xmusic3) != 0.000000)
+  { 
+    call stop_power;
+    channel = PlaySoundlocal(xmusic3, 1.0, 0, 0x81);
+    Print("Playing Music 3"); 
+    return;
+  }
+}
+if(music == 4)
+{
+music = music+1;
+if (GetSoundLen(xmusic4) != 0.000000)
+  { 
+    call stop_power;
+    channel = PlaySoundlocal(xmusic4, 1.0, 0, 0x81);
+    Print("Playing Music 4"); 
+    return;
+  }
+}
+if(music == 5)
+{
+music = music+1;
+if (GetSoundLen(xmusic5) != 0.000000)
+  { 
+    call stop_power;
+    channel = PlaySoundlocal(xmusic5, 1.0, 0, 0x81);
+    Print("Playing Music 5"); 
+    return;
+  }
+}
+if(music == 6)
+{
+music = music+1;
+if (GetSoundLen(xmusic6) != 0.000000)
+  { 
+    call stop_power;
+    channel = PlaySoundlocal(xmusic6, 1.0, 0, 0x81);
+    Print("Playing Music 6"); 
+    return;
+  }
+}
+if(music == 7)
+{
+music = music+1;
+if (GetSoundLen(xmusic7) != 0.000000)
+  { 
+    call stop_power;
+    channel = PlaySoundlocal(xmusic7, 1.0, 0, 0x81);
+    Print("Playing Music 7"); 
+    return;
+  }
+}
+if(music == 8)
+{
+music = music+1;
+if (GetSoundLen(xmusic8) != 0.000000)
+  { 
+    call stop_power;
+    channel = PlaySoundlocal(xmusic8, 1.0, 0, 0x81);
+    Print("Playing Music 8"); 
+    return;
+  }
+}
+if(music == 9)
+{
+music = music+1;
+if (GetSoundLen(xmusic9) != 0.000000)
+  { 
+    call stop_power;
+    channel = PlaySoundlocal(xmusic9, 1.0, 0, 0x81);
+    Print("Playing Music 9"); 
+    return;
+  }
+}
+if(music == 10)
+{
+music = music+1;
+if (GetSoundLen(xmusicn10) != 0.000000)
+  { 
+    call stop_power;
+    channel = PlaySoundlocal(xmusicn10, 1.0, 0, 0x81);
+    Print("Playing Music 10"); 
+    return;
+  }
+}
+if(music == 11)
+{
+music = 0;
+   call stop_power;
+Print("Music Off");
+}
+
+   Return;
+
+# ........................................................................................
+
+stop_power:
+   if(channel != -1)
+   {
+      StopSound(channel, 0.1);
+      channel = -1;
+   }
+
+   Return;
+
+# .......................
+
+end
+
+
+

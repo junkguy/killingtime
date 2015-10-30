@@ -1,0 +1,168 @@
+# Killing Time
+# (c) 2004-2005. By ID_Junkguy
+
+symbols
+                      
+int          isslow=0                           local  
+int          slowness=0                         local
+int          effectHandle=-1                    local
+int          iswaiting=0                        local 
+sound        onsnd=btstart.wav                  local
+sound        offsnd=btstop.wav                  local
+sound        heartsnd=btheartbeat.wav           local
+message      startup
+message      activated     
+message      trigger                      
+message      pulse
+message      killed
+message      newplayer
+message      timer
+
+end                                                                           
+
+# ========================================================================================
+
+code
+
+startup:
+player=GetLocalPlayerThing();
+iswaiting=1;
+Sleep(0.1);
+iswaiting=0;
+SetPulse(1.0);
+SetInv(player, 116, 15.0);
+isslow=0;
+SendTrigger(-1, 13370, 0, 0, 0, 0);
+return;
+
+# ================================================
+
+activated:
+
+if( GetInv(player, 123) == 0.0 ) return;
+
+if(iswaiting) return;
+
+isslow = (GetDebugModeFlags() & 0x400);
+
+if(isslow)
+{
+ SendTrigger(-1, 13370, 0, 0, 0, 0);
+}
+else
+{
+  if(GetInv(player, 116) < 7)
+  {
+   Print("Killing Time less than 7");
+   return;
+  }
+
+ SendTrigger(-1, 13371, player, 0, 0, 0);
+}
+
+return;
+
+# ================================================
+
+trigger:
+
+if(GetSourceRef() == 13370)
+ {
+  if(GetDebugModeFlags() & 0x400)
+  {
+    Print("Killing Time has ended.");
+    slowness=0;
+    ClearDebugModeFlags(0x400);
+    iswaiting=1;
+    PlaySoundlocal(offsnd, 1.0, 0, 0x80);
+    SetTimerEx(2.0, 3, 0.0, 0.0);
+    SetPulse(1.0);
+    
+    if(effectHandle!=-1)
+    {
+      freeColorEffect(effectHandle);
+      effectHandle = -1;
+    }
+
+  }
+ }
+else if(GetSourceRef() == 13371)
+ {
+  if(!(GetDebugModeFlags() & 0x400))
+  {
+   jkStringClear();
+   jkStringConcatPlayerName(GetParam(0));
+   jkStringConcatAsciiString(" has activated Killing Time!");
+   jkStringOutput(player, -1);
+
+   slowness=1;
+   SetDebugModeFlags(0x400);
+   iswaiting=1;
+   PlaySoundlocal(onsnd, 1.0, 0, 0x80);
+   effectHandle = newColorEffect(0, 0, 0, 0.200, 0.120, 0.010, 0, 0, 0, 1.0);
+   SetTimerEx(0.4, 3, 0.0, 0.0);
+   SetPulse(0.2);
+  }
+ }
+
+
+return;
+
+# ===============================================
+
+pulse:
+
+if( GetInv(GetLocalPlayerThing(), 123) == 0.0 ) return;
+
+if((GetInv(player, 116) >= 15.0) && (!slowness)) return;
+
+if(slowness)
+{
+PlaySoundlocal(heartsnd, 1.0, 0, 0x80);
+PrintInt(GetInv(player, 116));
+ ChangeInv(player, 116, -1.0);
+  if(GetInv(player, 116)==0.0)
+  {
+   SendTrigger(-1, 13370, 0, 0, 0, 0);
+   slowness=0;
+   return;
+  }
+}
+else
+{
+PrintInt(GetInv(player, 116));
+ ChangeInv(player, 116, 1.0);
+}
+ 
+return;
+
+# ===============================================
+
+killed:
+
+if(GetLocalPlayerThing() != GetSenderRef()) return;
+
+if( GetInv(GetLocalPlayerThing(), 123) == 0.0 ) return;
+
+SendTrigger(-1, 13370, 0, 0, 0, 0);
+slowness=0;
+
+return;
+
+# ===============================================
+
+timer:
+
+ if(GetSenderID() == 3)
+ {
+ iswaiting=0;
+ }
+
+return;
+
+end
+
+
+
+
+

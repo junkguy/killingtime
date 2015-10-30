@@ -1,0 +1,79 @@
+# MODEL C:\Program Files\LucasArts\Jedi Knight\Resource\3do\invis.3do created by JED 0.95 beta
+
+SECTION: HEADER
+
+3DO 2.1
+
+SECTION: MODELRESOURCE
+
+MATERIALS 1
+0: invis.mat
+
+SECTION: GEOMETRYDEF
+
+RADIUS .00075
+
+INSERT OFFSET 0 0 0
+
+GEOSETS 1
+
+GEOSET 0
+
+MESHES 1
+
+MESH 0
+NAME Layer0
+RADIUS .00075
+GEOMETRYMODE	4
+LIGHTINGMODE	3
+TEXTUREMODE	1
+
+VERTICES 8
+
+0: -.0005 .0005 -.00025 0
+1: -.0005 -.0005 -.00025 0
+2: .0005 -.0005 -.00025 0
+3: .0005 .0005 -.00025 0
+4: -.0005 .0005 .00025 0
+5: .0005 .0005 .00025 0
+6: .0005 -.0005 .00025 0
+7: -.0005 -.0005 .00025 0
+
+TEXTURE VERTICES 1
+
+0: 0 0
+
+VERTEX NORMALS
+
+0: -.333333 .333333 -.333333
+1: -.333333 -.333333 -.333333
+2: .333333 -.333333 -.333333
+3: .333333 .333333 -.333333
+4: -.333333 .333333 .333333
+5: .333333 .333333 .333333
+6: .333333 -.333333 .333333
+7: -.333333 -.333333 .333333
+
+FACES 6
+
+0: 0 0x0 4 3 1 0 4 3, 0 2, 0 1, 0 0, 0
+1: 0 0x0 4 3 1 0 4 7, 0 6, 0 5, 0 4, 0
+2: 0 0x0 4 3 1 0 4 3, 0 5, 0 6, 0 2, 0
+3: 0 0x0 4 3 1 0 4 2, 0 6, 0 7, 0 1, 0
+4: 0 0x0 4 3 1 0 4 1, 0 7, 0 4, 0 0, 0
+5: 0 0x0 4 3 1 0 4 0, 0 4, 0 5, 0 3, 0
+
+FACE NORMALS
+
+0: 0 0 -1
+1: 0 0 1
+2: 1 0 0
+3: 0 -1 0
+4: -1 0 0
+5: 0 1 0
+
+SECTION: HIERARCHYDEF
+
+HIERARCHY NODES 1
+# num: flags: type: mesh: parent: child:  sibling:  numChildren: x:   y:  z:  pitch: yaw: roll: pivotx: pivoty: pivotz: hnodename:
+ 0:     0x0    0x1     0     -1      -1     -1        0     0.000000 0.000000 0.000000  0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 Layer0

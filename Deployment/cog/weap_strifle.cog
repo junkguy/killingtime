@@ -1,0 +1,391 @@
+# Jedi Knight Cog Script
+#
+# Desert Eagle
+#
+# By ID_Junkguy
+
+symbols
+
+model       povModel=strv.3do                   local
+model       invisModel=invis.3do                   local
+model       weaponMesh=strg.3do                 local
+
+keyframe    mountAnim=deaglemnt.key               local
+keyframe    dismountAnim=dd44dis.key            local
+keyframe    povfireAnim=deaglefire.key            local
+keyframe    povreloadAnim=deaglereload.key       local
+keyframe    holsterAnim=kyhlstr.key             local
+keyframe    reloadg=reloadkf7.key               local
+
+sound       outSound=clipempty.wav               local
+sound       dismountSound=PutWeaponAway01.wav   local
+
+thing       player                              local
+thing       victim                              local
+thing       potential                           local
+
+flex        dot                                 local
+flex        maxDot                              local
+
+flex        fireWait=0.15                       local
+flex        holsterWait                         local
+flex        fireDelay=0.6                       local
+flex        powerBoost                          local
+flex        reloading=1.9                       local
+
+
+template     lookghost=+lghost                   local                         
+int          error=0                            local                         
+int          direction_gun=1                    local   
+template    povtemp=+deagletemp       		local 
+thing		weaponpov=-1	            	local
+thing		weaplook	            		local
+
+int         channel=-1                        local
+
+
+int         pulseon=0                           local   
+int         weaponIndex                         local
+int         trackID=-1                          local
+int         dummy=0                             local
+int         mode                                local
+int         holsterTrack                        local
+int         ID                                  local
+int         random                              local
+
+message     activated
+message     deactivated
+message     selected
+message     deselected
+message     autoselect
+message     fire
+message     killed
+message     newplayer
+message     timer
+message     pulse
+
+
+material    flash=muzzle.mat                   local  
+
+end
+
+# ========================================================================================
+
+code
+
+fire:
+   player = GetSourceRef();
+
+   // Check that the player is still alive.
+   if(GetThingHealth(player) <= 0)
+   {
+      Return;
+   }
+  if(mode == 0)
+{
+   if(GetInv(player, 120) > 6.0)
+    {
+ChangeFireRate(player, 0.5);
+PlaySoundThing(outSound, player, 1, -1, -1, 0x80);
+//SetPulse(0);
+pulseon = 0;
+      Return;
+   }
+
+   // Check Ammo - If we are out, autoselect best weapon.
+   if(GetInv(player, 11) < 1.0)
+   {
+ChangeFireRate(player, 0.5);
+//SetPulse(0);
+pulseon = 0;
+PlaySoundThing(outSound, player, 1, -1, -1, 0x80);
+     SetInv(player, 120, 0.0);
+      if(GetAutoSwitch() & 1)
+         SelectWeapon(player, AutoSelectWeapon(player, 1));
+      Return;
+   }
+
+
+if (pulseon == 0)
+{
+ if(GetInv(player, 120) == 6.0)
+ {
+ pulseon = 0;
+ }
+ else
+ {
+ pulseon = 1;
+ }
+
+   SendTrigger(-1, 20, player, 0, 0, 0);
+
+   PlayMode(player, 8);
+
+
+//   PlaySoundThing(fireSound, player, 1, -1, -1, 0x80);
+//shoot sound in client
+
+
+
+
+   ChangeInv(player, 120, 1.0);
+   ChangeInv(player, 11, -1.0);
+
+
+//   jkPlayPOVKey(player, povfireAnim, 1, 0x38);
+	StopKey(weaponpov, trackID, 0.0); 
+	trackID = PlayKey(weaponpov, povfireAnim, 3, 20); 
+
+
+// muzzleflash here
+
+}
+
+}
+else
+{
+   if(GetInv(player, 11) < 1.0)
+   {
+	Print("Out of bullets.");
+   }
+   else if(GetInv(player, 120) < 1.0)
+   {
+	Print("The clip is full.");
+   }
+else
+   {  
+ChangeFireRate(player, reloading);
+   SetInv(player, 120, 0.0);
+
+
+   SendTrigger(-1, 21, player, 0, 0, 0);
+// reloadsound
+
+
+	StopKey(weaponpov, trackID, 0.0); 
+	trackID = PlayKey(weaponpov, povreloadAnim, 2, 20); 
+
+
+
+   PlayKey(GetLocalPlayerThing(), reloadg, 2, 32);
+  // jkPlayPOVKey(player, reloadv, 1, 0x38);
+   }
+}
+
+
+
+   Return;
+
+# ........................................................................................
+
+activated:
+   player = GetSourceRef();
+   mode = GetSenderRef();
+
+   jkSetWaggle(player, '0.0 0.0 0.0', 0);
+   powerBoost = GetInv(player, 63);
+   ActivateWeapon( player, fireWait/powerBoost, mode );
+   Return;
+
+# ........................................................................................
+
+deactivated:
+   player = GetSourceRef();
+   mode = GetSenderRef();
+
+if(GetInv(player, 11) < 1.0)
+{
+}
+else if(GetInv(player, 120) > 6.0)
+    {  
+Sleep(0.1);
+ChangeFireRate(player, reloading);
+     SetInv(player, 120, 0.0);
+   PlayKey(GetLocalPlayerThing(), reloadg, 2, 32);
+
+
+   SendTrigger(-1, 21, player, 0, 0, 0);
+
+StopKey(weaponpov, trackID, 0.0); 
+trackID = PlayKey(weaponpov, povreloadAnim, 2, 20); 
+
+   }
+
+pulseon = 0;
+
+   jkSetWaggle(player, '10.0 7.0 0.0', 350);
+   DeactivateWeapon( player, mode );
+   Return;
+
+# ........................................................................................
+
+selected:
+   player = GetSourceRef();
+
+   // Setup the meshes and models.
+   jkSetPOVModel(player, povModel);
+   jkSetWeaponMesh(player, weaponMesh);
+   SetArmedMode(player, 1);
+
+
+
+   weaponpov=CreateThing(povtemp, player);
+   SetThingPos(weaponpov, GetThingPos(player));
+   AttachThingToThingEx(weaponpov, player, 0x8);
+   SetThingModel(weaponpov, povModel);
+	StopKey(weaponpov, trackID, 0.0);
+	trackID = PlayKey(weaponpov, mountAnim, 1, 20);
+	error=0;
+	SetPulse(0.002);
+   jkSetPOVModel(player, invisModel);
+
+
+
+   // Play mounting sound.
+   PlayMode(player, 41);
+
+SendTrigger(-1, 22, player, 0, 0, 0);
+
+
+
+
+
+   // Play the animation (NOLOOP + UNIQUE + ENDPAUSE).
+   // The animation is held at the last frame after it is played.
+   trackID = jkPlayPOVKey(player, mountAnim, 0, 0x14);
+   jkSetWaggle(player, '10.0 7.0 0.0', 350);
+
+   // Clear saber flags, and allow activation of the weapon
+   jkClearFlags(player, 0x5);
+   SetCurWeapon(player, 3);
+   SetMountWait(player, GetKeyLen(mountAnim));
+
+   Return;
+
+# ........................................................................................
+
+deselected:
+   player = GetSourceRef();
+   weaponIndex = GetSenderRef();
+   
+   error=0;
+   SetPulse(0);
+   if(weaponpov!=-1){
+    DestroyThing(weaponpov);
+    weaponpov=-1;
+   }
+
+   PlaySoundThing(dismountSound, player, 1.0, -1, -1, 0x80);
+   jkPlayPOVKey(player, dismountAnim, 0, 0x18);
+   
+	StopKey(weaponpov, trackID, 0.0); 
+	trackID = PlayKey(weaponpov, dismountAnim, 1, 0x14); 
+
+   holsterWait = GetKeyLen(holsterAnim);
+   SetMountWait(player, holsterWait);
+   holsterTrack = PlayKey(player, holsterAnim, 1, 0x4);
+   SetTimerEx(holsterWait, 2, 0.0, 0.0);
+   if (trackID != -1)
+   {
+      jkStopPOVKey(player, trackID, 0);
+      trackID = -1;
+   }
+   jkSetWaggle(player, '0.0 0.0 0.0', 0);
+
+   Return;
+
+# ........................................................................................
+
+autoselect:
+   player = GetSourceRef();
+
+   // If the player has the weapon
+   if(GetInv(player, 3) != 0.0)
+   {
+      // If the player has ammo
+      if(GetInv(player, 11) != 0.0)
+      {
+         ReturnEx(500.0);
+      }
+      else
+      {
+         ReturnEx(-1.0);
+      }
+   }
+   else
+   {
+      ReturnEx(-1.0);
+   }
+
+   Return;
+
+# .......................................
+
+killed:
+
+if(GetLocalPlayerThing() != GetSenderRef()) Return;
+
+   error=0;
+   SetPulse(0);
+   if(weaponpov!=-1){
+    DestroyThing(weaponpov);
+    weaponpov=-1;
+   }
+  
+Return;
+
+# .......................................
+
+newplayer:
+
+   error=0;
+   SetPulse(0);
+   if(weaponpov!=-1){
+    DestroyThing(weaponpov);
+    weaponpov=-1;
+   }
+
+Return;
+
+# ........................................................................................
+
+pulse:
+
+	//Pov code
+	if(error == 1)
+	{
+		if(GetCurWeapon(player) != gunweap)
+		{
+			error=0;
+			SetPulse(0);
+			DestroyThing(weaponpov);
+		}
+	}
+
+
+   if(GetCurrentCamera() == 0) ClearThingFlags(weaponpov, 0x10);
+   else SetThingFlags(weaponpov, 0x10);
+
+   weaplook=FireProjectile(player, lookghost, -1, -1, '0.0 0.0 0.0', '0.0 0.0 0.0', 1.0, 0x20, -1.0, -1.0);
+   SetThingLook(weaponpov, GetThingLVec(weaplook));
+
+Return;
+
+# .......
+
+timer:
+   if(GetSenderID() == 2) StopKey(player, holsterTrack, 0.0);
+   else if(GetSenderID() == 3)
+   {
+   SetMaterialCel(flash, 0);
+   }
+
+Return;
+
+
+end
+
+
+
+
+

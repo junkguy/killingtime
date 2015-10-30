@@ -1,0 +1,9 @@
+# Foley description for repeaterball hit
+#
+# class		filename		playflags	minRadius	maxRadius	maxVolume
+#####################################################################################################
+#
+
+create		ric1.wav             0x0     0.5	4.0     1.0
+
+

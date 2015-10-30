@@ -1,0 +1,68 @@
+# Jedi Knight Cog Script
+#
+# 00_SMOKETRAIL.COG
+#
+# Leave a smoke trail behind a moving object
+#
+# [YB]
+#
+# (C) 1997 LucasArts Entertainment Co. All Rights Reserved
+
+flags=0x240
+
+symbols
+
+flex         soundrand                             local
+sound       rico1=ric1.wav                        local
+sound       rico2=ric2.wav                        local
+sound       rico3=ric3.wav                        local
+sound       rico4=ric4.wav                        local
+
+sound       rico1s=ric1slow.wav                        local
+sound       rico2s=ric2slow.wav                        local
+sound       rico3s=ric3slow.wav                        local
+sound       rico4s=ric4slow.wav                        local
+
+message     created
+
+end
+
+# ========================================================================================
+
+code
+created:
+
+soundrand = Rand();
+
+if(GetDebugModeFlags() & 0x400){
+if(soundrand<0.25)
+PlaySoundThing(rico1s, GetSenderRef(), 1, -1, -1, 0x80);
+else if(soundrand<0.5)
+PlaySoundThing(rico2s, GetSenderRef(), 1, -1, -1, 0x80);
+else if(soundrand<0.75)
+PlaySoundThing(rico3s, GetSenderRef(), 1, -1, -1, 0x80);
+else
+PlaySoundThing(rico4s, GetSenderRef(), 1, -1, -1, 0x80);
+}
+
+else{
+if(soundrand<0.25)
+PlaySoundThing(rico1, GetSenderRef(), 1, -1, -1, 0x80);
+else if(soundrand<0.5)
+PlaySoundThing(rico2, GetSenderRef(), 1, -1, -1, 0x80);
+else if(soundrand<0.75)
+PlaySoundThing(rico3, GetSenderRef(), 1, -1, -1, 0x80);
+else
+PlaySoundThing(rico4, GetSenderRef(), 1, -1, -1, 0x80);
+}
+
+// if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(soundchan, 0.35+(Rand()*0.1), 0.000001);
+// else ChangeSoundPitch(soundchan, 0.8+(Rand()*0.4), 0.000001);
+
+   Return;
+
+
+
+end   
+
+

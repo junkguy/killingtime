@@ -1,0 +1,196 @@
+# Jedi Knight Cog Script
+#
+# 00_SMOKETRAIL.COG
+#
+# Leave a smoke trail behind a moving object
+#
+# [YB]
+#
+# (C) 1997 LucasArts Entertainment Co. All Rights Reserved
+
+flags=0x240
+
+symbols
+
+template    smalld=+molotovsmalldamage              local
+template    mediumd=+molotovmediumdamage              local
+template    bigd=+molotovbigdamage              local
+
+template    expflame=+molotov_exp_flame              local
+template    expsmallflame=+molotov_exp_smallflame      local
+template    expswirly=+molotov_exp_swirly              local
+template    expring=+molotov_exp_ring              local
+template    expcloud=+molotov_exp_cloud             local
+
+int		num=1						local
+
+message     created
+message     pulse
+
+end
+
+# ========================================================================================
+
+code
+created:
+
+  num=1;
+
+   CreateThing(expring, GetSenderRef());
+   CreateThing(expcloud, GetSenderRef());
+   FireProjectile(GetSenderRef(), expswirly, -1, -1, '0.1 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expswirly, -1, -1, '-0.1 0.0 0.0', '0 180 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expswirly, -1, -1, '0.0 0.1 0.0', '0 90 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expswirly, -1, -1, '0.0 -0.1 0.0', '0 270 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), bigd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+
+  SetThingPulse(GetSenderRef(), 0.2);
+
+  Return;
+
+
+pulse:
+
+if(num==1)
+{
+   CreateThing(expring, GetSenderRef());
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==2)
+{
+   CreateThing(expring, GetSenderRef());
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==3)
+{
+   CreateThing(expring, GetSenderRef());
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==4)
+{
+   CreateThing(expring, GetSenderRef());
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==5)
+{
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==6)
+{
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==7)
+{
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==8)
+{
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==9)
+{
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==10)
+{
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==11)
+{
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==12)
+{
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==13)
+{
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), mediumd, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==14)
+{
+   CreateThing(expflame, GetSenderRef());
+   FireProjectile(GetSenderRef(), smalld, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==15)
+{
+   FireProjectile(GetSenderRef(), smalld, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==16)
+{
+   FireProjectile(GetSenderRef(), smalld, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+else if(num==17)
+{
+   FireProjectile(GetSenderRef(), smalld, -1, -1, '0.0 0.0 0.0', '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+   FireProjectile(GetSenderRef(), expsmallflame, -1, -1, VectorSet(((Rand()*2)-1)*0.4, ((Rand()*2)-1)*0.4, 0.0), '0 0 0', 1.0, 0x20, -1, -1);
+}
+
+num = num + 1;
+
+   Return;
+
+
+
+
+
+end   
+
+

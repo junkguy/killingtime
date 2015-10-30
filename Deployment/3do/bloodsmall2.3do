@@ -1,0 +1,72 @@
+# MODEL C:\Program Files\LucasArts\Jedi Knight\Resource\goldeneye\blood\bloodsmall2.3do created by JED 0.95 beta
+
+SECTION: HEADER
+
+3DO 2.1
+
+SECTION: MODELRESOURCE
+
+MATERIALS 1
+0: splat2.mat
+
+SECTION: GEOMETRYDEF
+
+RADIUS .0083
+
+INSERT OFFSET 0 0 0
+
+GEOSETS 1
+
+GEOSET 0
+
+MESHES 1
+
+MESH 0
+NAME LAYER0
+RADIUS .0083
+GEOMETRYMODE	4
+LIGHTINGMODE	3
+TEXTUREMODE	1
+
+VERTICES 8
+
+0: .004546 .00474 -.004744 0
+1: -.004891 .00474 -.004744 0
+2: -.004891 -.004527 -.004744 0
+3: .004546 -.004527 -.004744 0
+4: -.004891 .00218 -.005256 0
+5: -.002827 .00218 -.005256 0
+6: -.004891 .001207 -.005256 0
+7: -.002827 .001207 -.005256 0
+
+TEXTURE VERTICES 4
+
+0: 58.58 -.72
+1: 58.66 -58.64
+2: -.32 -58.72
+3: -.4 -.8
+
+VERTEX NORMALS
+
+0: 0 0 1
+1: 0 0 1
+2: 0 0 1
+3: 0 0 1
+4: 0 0 0
+5: 0 0 0
+6: 0 0 0
+7: 0 0 0
+
+FACES 1
+
+0: 0 0x0 4 3 1 0 4 3, 0 0, 1 1, 2 2, 3
+
+FACE NORMALS
+
+0: 0 0 1
+
+SECTION: HIERARCHYDEF
+
+HIERARCHY NODES 1
+# num: flags: type: mesh: parent: child:  sibling:  numChildren: x:   y:  z:  pitch: yaw: roll: pivotx: pivoty: pivotz: hnodename:
+ 0:     0x0    0x1     0     -1      -1     -1        0     0.000000 0.000000 0.005000  0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 LAYER0

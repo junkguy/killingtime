@@ -1,0 +1,40 @@
+# Jedi Knight Cog Script
+#
+# 00_SMOKETRAIL.COG
+#
+# Leave a smoke trail behind a moving object
+#
+# [YB]
+#
+# (C) 1997 LucasArts Entertainment Co. All Rights Reserved
+
+flags=0x240
+
+symbols
+
+template    smoke=+molotovtrail              local
+int         dummy                            local
+
+message     created
+message     pulse
+
+end
+
+# ========================================================================================
+
+code
+created:
+   SetThingPulse(GetSenderRef(), 0.02);            // set 20 msec timer for smoke release
+
+   Return;
+
+# ........................................................................................
+
+pulse:
+   dummy = CreateThing(smoke, GetSenderRef());     // create smoke at our current location
+
+   Return;
+
+end   
+
+

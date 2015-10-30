@@ -1,0 +1,230 @@
+# Jedi Knight Cog Script
+#
+# CLIENT_M4.COG
+#
+# By ID_Junkguy, original cog by Hideki
+
+flags=0x240
+symbols
+
+int		NumShooters=0		local
+
+int		i			local
+int		m			local
+int		z			local
+
+int		shooter0=-1		local
+int		shooter1=-1		local
+int		shooter2=-1		local
+int		shooter3=-1		local
+int		shooter4=-1		local
+int		shooter5=-1		local
+int		shooter6=-1		local
+int		shooter7=-1		local
+int		shooter8=-1		local
+int		shooter9=-1		local
+int		shooter10=-1	local
+int		shooter11=-1	local
+int		shooter12=-1	local
+int		shooter13=-1	local
+int		shooter14=-1	local
+int		shooter15=-1	local
+int		shooter16=-1	local
+int		shooter17=-1	local
+int		shooter18=-1	local
+int		shooter19=-1	local
+int		shooter20=-1	local
+int		shooter21=-1	local
+int		shooter22=-1	local
+int		shooter23=-1	local
+int		shooter24=-1	local
+int		shooter25=-1	local
+int		shooter26=-1	local
+int		shooter27=-1	local
+int		shooter28=-1	local
+int		shooter29=-1	local
+int		shooter30=-1	local
+int		shooter31=-1	local
+int		shooter32=-1	local
+
+int		thesender=-1	local
+
+int         channel=-1                        local
+
+sound       m4reloadSound=m4rldsnd.wav        local
+sound       m4mountSound=m4mntsnd.wav         local
+
+int         isPulsing         local
+
+template    ugw1=+m4bullet                 local
+template    rifleshell=+rifleshell                 local
+sound       ugwsnd=m4shoot.wav              local
+int         ugwperson                        local
+vector      randVec6                         local          
+vector      randDir6                         local   
+
+message		trigger
+message		pulse
+message           startup
+
+end
+
+# ========================================================================================
+
+code
+
+startup:
+SetPulse(0);
+return;
+
+# .......................
+
+trigger:
+
+	if(GetSourceRef() == 60)
+	{
+         thesender=GetParam(1);
+		if(!GetParam(0))
+		{
+                  call extrashot;
+			NumShooters = NumShooters + 1;
+			shooter0[NumShooters] = thesender;
+			SetPulse(0.1);
+                  isPulsing = 1;
+		}
+		else
+		{
+
+			for(i=1; i<=NumShooters; i=i+1)
+			{
+				if(shooter0[i] == thesender)
+				{
+					if(i != NumShooters) for(m=i+1; m<=NumShooters; m=m+1) shooter0[m-1] = shooter0[m];
+
+					shooter0[NumShooters] = -1;
+					i = i - 1;
+                              NumShooters = NumShooters - 1;
+
+				}
+			}
+
+			if(NumShooters == 0)
+                  {
+                    SetPulse(0);
+                    isPulsing = 0;
+                  }
+
+		}
+	}
+	else if(GetSourceRef() == 61) //reload
+	{
+
+channel = -1;
+if(channel == -1)
+{
+channel = PlaySoundThing(m4reloadSound, GetParam(0), 1, -1, -1, 0x80);
+if(channel != -1)
+{ 
+if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(channel, 0.20, 0.01);
+else ChangeSoundPitch(channel, 1.00, 0.01);
+ChangeSoundVol(channel, 1.0, 0.01);
+}
+}
+
+	}
+	else if(GetSourceRef() == 62) //mount
+	{
+
+
+channel = -1;
+if(channel == -1)
+{
+channel = PlaySoundThing(m4mountSound, GetParam(0), 1.0, -1.0, -1.0, 0x80);
+if(channel != -1)
+{ 
+if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(channel, 0.20, 0.01);
+else ChangeSoundPitch(channel, 1.00, 0.01);
+ChangeSoundVol(channel, 1.0, 0.01);
+}
+}
+
+
+	}
+
+
+	return;
+# ........................................................................................
+extrashot:
+
+ugwperson = thesender;
+
+randDir6 = VectorSet((Rand()-0.5)*8, ((Rand()-0.5)*8)+90, 0.0);
+FireProjectile(ugwperson, rifleshell, -1, -1, '0.02 0.044 0.02', randDir6, 1, 0x20, -1, -1);
+
+randVec6 = VectorSet((Rand()-0.5)*1.0, (Rand()-0.5)*1.0, 0.0);
+
+	FireProjectile(ugwperson, ugw1, -1, -1, '0.0145 0.1024 0.027', randVec6, 1, 0x20, -1, -1);
+
+PlayMode(ugwperson, 8);
+
+
+channel = -1;
+if(channel == -1)
+{
+channel = PlaySoundThing(ugwsnd, ugwperson, 0.0, -1, -1, 0x180);
+if(channel != -1)
+{ 
+if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(channel, 0.35+(Rand()*0.1), 0.01);
+else ChangeSoundPitch(channel, 0.95+(Rand()*0.1), 0.01);
+ChangeSoundVol(channel, 1.0, 0.01);
+}
+}
+
+//if(GetDebugModeFlags() & 0x400) PlaySoundThing(ugwslow, ugwperson, 1, -1, -1, 0x80);
+//else PlaySoundThing(ugwsnd, ugwperson, 1, -1, -1, 0x80);
+
+
+	return;
+# ........................................................................................
+
+pulse:
+
+if(isPulsing == 0)
+{
+  SetPulse(0);
+  return;
+}
+
+	for(z=1; z<=NumShooters; z=z+1)
+	{
+
+ugwperson = shooter0[z];
+
+randDir6 = VectorSet((Rand()-0.5)*8, ((Rand()-0.5)*8)+90, 0.0);
+FireProjectile(ugwperson, rifleshell, -1, -1, '0.02 0.044 0.02', randDir6, 1, 0x20, -1, -1);
+
+randVec6 = VectorSet((Rand()-0.5)*1.0, (Rand()-0.5)*1.0, 0.0);
+
+	FireProjectile(ugwperson, ugw1, -1, -1, '0.0145 0.1024 0.027', randVec6, 1, 0x20, -1, -1);
+
+PlayMode(ugwperson, 8);
+
+
+channel = -1;
+if(channel == -1)
+{
+channel = PlaySoundThing(ugwsnd, ugwperson, 0.0, -1, -1, 0x180);
+if(channel != -1)
+{ 
+if(GetDebugModeFlags() & 0x400) ChangeSoundPitch(channel, 0.35+(Rand()*0.1), 0.01);
+else ChangeSoundPitch(channel, 0.95+(Rand()*0.1), 0.01);
+ChangeSoundVol(channel, 1.0, 0.01);
+}
+}
+
+
+	}
+
+	return;
+
+end

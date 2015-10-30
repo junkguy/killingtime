@@ -1,0 +1,9 @@
+# Foley description for thermal detonators
+#
+# class		filename		playflags	minRadius	maxRadius	maxVolume
+#####################################################################################################
+#
+
+create		expl_molotov.wav             0x0     	1.0    		6.5		1.0
+
+
