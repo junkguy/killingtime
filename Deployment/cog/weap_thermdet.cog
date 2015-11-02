@@ -22,6 +22,7 @@ symbols
 
 model       povModel=detv.3do             local
 model       weaponMesh=detg.3do           local
+model       weaponMeshFist=fistg.3do      local
 
 keyframe    mountAnim=detvmnt.key         local
 keyframe    dismountAnim=detvdis.key      local
@@ -40,6 +41,7 @@ sound       loopSound=ThermLoop01.wav     local
 
 flex        delayTime=1.0                 local
 flex        throwWait=0.8                 local
+flex        externalModelWait=0.4         local
 flex        mountWait                     local
 flex        autoAimFOV=10                 local
 flex        autoAimMaxDist=5              local
@@ -144,6 +146,10 @@ deactivated:
    SendTrigger(-1, 41, player, delayTime, 0, 0);
    PlayMode(player, 15);
 
+   // set fist model for third person, then set timer to restore
+   jkSetWeaponMesh(player, weaponMeshFist);
+   SetTimerEx(externalModelWait, 3, 0.0, 0.0);
+
    ChangeInv(player, 4, -1.0);
    SetMountWait(player, throwWait);
 
@@ -174,10 +180,13 @@ timer:
       // Start waggling after the throw.
       jkSetWaggle(player, '10.0 7.0 0.0', 350);
    }
-   else
-   if (GetSenderId() == 2)
+   else if (GetSenderId() == 2)
    {
       StopKey(player, holsterTrack, 0.0);
+   }
+   else if ( (GetSenderId() == 3) && (GetCurWeapon(player) == 4) )
+   {
+      jkSetWeaponMesh(player, weaponMesh);
    }
    Return;
 
