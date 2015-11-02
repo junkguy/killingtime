@@ -1,5 +1,6 @@
 # Foley description for thermal detonator
-create 		molotovfly.WAV     0x88
+# flying sound handled by molotovtrail.cog
+# create 		molotovfly.WAV     0x88
 enterwater	ploop01.wav
 enterwaterslow	ploop01.wav
 hithard		thermal1.wav
