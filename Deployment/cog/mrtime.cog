@@ -10,7 +10,6 @@ thing		newMrTime=-1			local
 thing		killer				local
 thing		victim				local
 
-model		oldModel			local
 model		startupModel			local
 model		mrTimeModel=mrtime.3do		local
 model		fallbackModel=ky.3do		local
@@ -221,7 +220,6 @@ trigger:
 		// Sync newMrTime variable
 		SendTrigger(-1, 10940, killer, -1, -1, -1);
 
-		oldModel = GetThingModel(newMrTime);
 		SetThingModel(newMrTime, mrTimeModel);
 
 		// Warning beep global
@@ -273,9 +271,6 @@ trigger:
 		// Mr Time died
 		if((victim == newMrTime) && (GetNumPlayers() > 1))
 		{
-			// Reset old Mr Time
-			oldMrTime = victim;
-
 			if(GetThingType(killer) != 10)
 			{
 				// Get new random Mr Time
@@ -292,7 +287,6 @@ trigger:
 			// Sync newMrTime variable
 			SendTrigger(-1, 10940, killer, -1, -1, -1);
 
-			oldModel = GetThingModel(newMrTime);
 			SetThingModel(newMrTime, mrTimeModel);
 
 			// Warning beep global
@@ -316,7 +310,6 @@ trigger:
 		// Set new Mr Time
 		newMrTime = killer;
 
-		oldModel = GetThingModel(newMrTime);
 		SetThingModel(newMrTime, mrTimeModel);
 
 		// Sync newMrTime variable
