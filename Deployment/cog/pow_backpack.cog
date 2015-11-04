@@ -1,0 +1,85 @@
+# Jedi Knight Cog Script
+#
+# POW_BACKPACK.COG
+#
+# POWERUP Script - Backpack
+#
+# [YB & CYW]
+#
+# (C) 1997 LucasArts Entertainment Co. All Rights Reserved
+
+
+symbols
+
+thing       powerup                          local
+thing       player                           local
+sound       pickupsnd=BactaPu1.wav           local
+
+int         autopickup=0                     local
+int         autoselect_weapon=-1             local
+
+message     touched
+message     taken
+
+end
+
+# ========================================================================================
+
+code
+
+touched:
+   player = GetSourceRef();
+   powerup = GetSenderRef();
+
+   if (GetThingHealth(player) > 0)
+      TakeItem(powerup, player);
+
+   Return;
+
+# ........................................................................................
+
+taken:
+   player = GetSourceRef();
+   powerup = GetSenderRef();
+
+   jkPrintUNIString(player, 200);
+
+   // Do effects.
+   PlaySoundThing(pickupsnd, powerup, 1.0, -1, -1, 0);
+   AddDynamicTint(player, 0.0, 0.0, 0.2);
+
+   // Pickup the backpack
+   PickupBackpack(player, powerup);
+
+   // If player is not Mr Time, don't get double deagles
+   if (GetInv(player, 123) == 0.0) {
+   	SetInv(player, 2, 0);
+   }
+
+   // New ammo is already assigned, so this is like a autopickup/autoreload mix,
+   // it will select the best weapon overall with all the stuff in the backpack
+   // taken into account.
+
+   autopickup = GetAutoPickup();
+   autoselect_weapon = AutoSelectWeapon(player, 0);
+
+   if(autopickup & 1)
+   {
+      if( !((autopickup & 2) && ((autoselect_weapon == 4) || (autoselect_weapon == 8) || (autoselect_weapon == 9)) ))
+      {
+         if(!((autopickup & 4) && (GetWeaponPriority(player, GetCurWeapon(player), 0) >= GetWeaponPriority(player, autoselect_weapon, 0) )))
+         {
+            if(!((autopickup & 8) && (GetCurWeapon(player) == 10)))
+            {
+               SelectWeapon(player, autoselect_weapon);
+               Return;
+            }
+         }
+      }
+   }
+
+   Return;
+
+end
+
+
