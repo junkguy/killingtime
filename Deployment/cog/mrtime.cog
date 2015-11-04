@@ -1,7 +1,5 @@
 # Jedi Knight Cog Script
 #
-# CLIENT_M4.COG
-#
 # By ID_Junkguy, original cog by Zagibu
 
 symbols
@@ -12,16 +10,12 @@ thing		newMrTime=-1			local
 thing		killer				local
 thing		victim				local
 
-template	fx=+smoke			local
-
-model           startupModel                    local
 model		oldModel			local
-model		newModel=mrtime.3do		local
+model           startupModel                    local
+model		mrTimeModel=mrtime.3do		local
 model		fallbackModel=ky.3do		local
 
-sound		rSound=rocketengine.wav		local
 sound		warning=beep2.wav		local
-sound		offSound=deactivate03.wav	local
 
 int		rIndex=0			local
 int		doubleCall=0			local
@@ -93,7 +87,7 @@ timer:
 	// Model check and capture startup model
 	if(GetSenderId() == 10902)
 	{
-		if(GetThingModel(player) == newModel)
+		if(GetThingModel(player) == mrTimeModel)
 		{
 			// Warning beep local
 			PlaySoundLocal(warning, 1, 0, 0x4);
@@ -125,6 +119,7 @@ pulse:
 
    player = GetSenderRef();
 
+   // reset player model if not Mr Time
    if( (GetInv(player, 123) == 0.0) && GetThingModel(player) != startupModel ) {
        SetThingModel(player, startupModel);
    }
@@ -187,19 +182,20 @@ trigger:
 			SetInv(GetLocalPlayerThing(), 123, 0.0);
 		}
 
-                // Locally print new hunter text message
+                // Locally print new Mr Time text message
 		jkStringClear();
 		jkStringConcatPlayerName(newMrTime);
 		jkStringConcatAsciiString(" is now Mr Time!");
 		jkStringOutput(GetLocalPlayerThing(), -1);
 	}
 	
-	// Sync newMrTime variable trigger (trigger message) WITHOUT changing hunter - used to update animations when new player joins (for new player only)
+	// Sync newMrTime variable trigger (trigger message) WITHOUT changing who is Mr Time.
+        // Used to update animations when new player joins (for new player only).
 	if(GetSourceRef() == 10941 && killer == GetLocalPlayerThing())
 	{
 	        newMrTime = GetParam(1);
 
-		// New hunter text message
+		// Print who is the new Mr Time
 		jkStringClear();
 		jkStringConcatPlayerName(newMrTime);
 		jkStringConcatAsciiString(" is Mr Time!");
@@ -216,7 +212,7 @@ trigger:
                 SendTrigger(-1, 10941, killer, newMrTime, 0, 0);
 	}
 
-	// New hunter trigger (startup message)
+	// New Mr Time trigger (startup message)
 	if(GetSourceRef() == 10911)
 	{
 		// Create new hunter
@@ -226,7 +222,7 @@ trigger:
 		SendTrigger(-1, 10940, killer, -1, -1, -1);
 
 		oldModel = GetThingModel(newMrTime);
-		SetThingModel(newMrTime, newModel);
+		SetThingModel(newMrTime, mrTimeModel);
 
 		// Warning beep global
 		PlaySoundGlobal(warning, 1, 0, 0x4);
@@ -247,14 +243,14 @@ trigger:
 		{
 			SetPlayerScore(victim, GetPlayerScore(victim) - 1);
 
-			// Hunter suicide
+			// Mr Time suicide
 			if(victim == newMrTime)
 			{
                               if(GetNumPlayers() > 1)
                               {
-                                   // Get new random hunter
+                                   // Get new random Mr Time
 				   rIndex = Rand() * GetNumPlayers();
-				   // while index out of bounds or chose the original hunter, try again
+				   // while index out of bounds or chose the original Mr Time, try again
 				   while( (rIndex == GetNumPlayers()) || ( (GetNumPlayers() > 1) && (GetPlayerThing(rIndex) == victim) ) )
 					rIndex = Rand() * GetNumPlayers();
 				   killer = GetPlayerThing(rIndex);
@@ -267,38 +263,37 @@ trigger:
 		{
 			SetPlayerScore(killer, GetPlayerScore(killer) + 1);
 
-			// Add score for hunter
+			// Add score for Mr Time
 			if(victim == newMrTime)
 			{
 				SetPlayerScore(killer, GetPlayerScore(killer) + 2);
 			}
 		}
 
-		// Hunter died
+		// Mr Time died
 		if((victim == newMrTime) && (GetNumPlayers() > 1))
 		{
-			// Reset old hunter
+			// Reset old Mr Time
 			oldMrTime = victim;
-			SetThingModel(oldMrTime, oldModel);
 
 			if(GetThingType(killer) != 10)
 			{
-				// Get new random hunter
+				// Get new random Mr Time
 				rIndex = Rand() * GetNumPlayers();
-				// while index out of bounds or chose the original hunter, try again
+				// while index out of bounds or chose the original Mr Time, try again
 				while( (rIndex == GetNumPlayers()) || ( (GetNumPlayers() > 1) && (GetPlayerThing(rIndex) == victim) ) )
 					rIndex = Rand() * GetNumPlayers();
 				killer = GetPlayerThing(rIndex);
 			}
 
-			// Create new hunter
+			// Create new Mr Time
 			newMrTime = killer;
 
 			// Sync newMrTime variable
 			SendTrigger(-1, 10940, killer, -1, -1, -1);
 
 			oldModel = GetThingModel(newMrTime);
-			SetThingModel(newMrTime, newModel);
+			SetThingModel(newMrTime, mrTimeModel);
 
 			// Warning beep global
 			PlaySoundGlobal(warning, 1, 0, 0x4);
@@ -308,21 +303,21 @@ trigger:
 		}
 	}
 
-	// Hunter left trigger (leave message)
+	// Mr Time left trigger (leave message)
 	if((GetSourceRef() == 10921) && (killer == newMrTime))
 	{
-		// Get new random hunter
+		// Get new random Mr Time
 		rIndex = Rand() * GetNumPlayers();
-	        // while index out of bounds or chose the original hunter, try again
+	        // while index out of bounds or chose the original Mr Time, try again
 		while( rIndex == GetNumPlayers() || (GetNumPlayers() > 1 && GetPlayerThing(rIndex) == victim) )
 			rIndex = Rand() * GetNumPlayers();
 		killer = GetPlayerThing(rIndex);
 
-		// Create new hunter
+		// Set new Mr Time
 		newMrTime = killer;
 
 		oldModel = GetThingModel(newMrTime);
-		SetThingModel(newMrTime, newModel);
+		SetThingModel(newMrTime, mrTimeModel);
 
 		// Sync newMrTime variable
 		SendTrigger(-1, 10940, killer, -1, -1, -1);
@@ -346,11 +341,7 @@ leave:
 # ........................................................................................
 
 damaged:
-	// Hunter has armor
-	// if(GetSenderRef() == newMrTime)
-	// 	ReturnEx(GetParam(0) / 2);
-	// else
-		ReturnEx(GetParam(0));
+	ReturnEx(GetParam(0));
 
 	Return;
 
