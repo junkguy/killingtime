@@ -19,6 +19,8 @@ sound		warning=beep2.wav		local
 int		rIndex=0			local
 int		doubleCall=0			local
 
+int		startupForceJumpRank		local
+
 message		startup
 message		killed
 message		timer
@@ -83,9 +85,10 @@ timer:
 	if(GetSenderId() == 10901)
 		SendTrigger(-1, 10911, player, -1, -1, -1);
 
-	// Model check and capture startup model
+	// Startup checks and initialization
 	if(GetSenderId() == 10902)
 	{
+		// check model
 		if(GetThingModel(player) == mrTimeModel)
 		{
 			// Warning beep local
@@ -97,8 +100,11 @@ timer:
 		}
 		else
 		{
+			// capture startup model
 			startupModel = GetThingModel(player);
 		}
+		// capture startup force jump rank
+		startupForceJumpRank = GetInv(player, 21);
 		SetThingPulse(player, 0.1);
 	}
 
@@ -165,7 +171,7 @@ trigger:
 			SetInv(newMrTime, 125, 0.0); //raffaello
 			SetInv(newMrTime, 126, 0.0); //double deagles
 
-			SetInv(newMrTime, 21, 8); // enable high jump
+			SetInv(newMrTime, 21, 4); // enable high jump
 			SetInvAvailable(newMrTime, 21, 1);
 
 			SetFireWait(newMrTime, -1);
@@ -179,6 +185,11 @@ trigger:
 		{
 			// Set local player as NOT Mr Time (but don't adjust guns, since previous Mr Time will be respawning anyways)
 			SetInv(GetLocalPlayerThing(), 123, 0.0);
+
+			SetInv(GetLocalPlayerThing(), 21, startupForceJumpRank);
+			if (startupForceJumpRank == 0) {
+				SetInvAvailable(GetLocalPlayerThing(), 21, 0);
+			}
 		}
 
 		// Locally print new Mr Time text message
