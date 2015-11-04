@@ -11,7 +11,7 @@ thing		killer				local
 thing		victim				local
 
 model		oldModel			local
-model           startupModel                    local
+model		startupModel			local
 model		mrTimeModel=mrtime.3do		local
 model		fallbackModel=ky.3do		local
 
@@ -40,7 +40,7 @@ startup:
 	// Catch this player's messages
 	CaptureThing(player);
 
-        // Timer for model check and capture startup model
+	// Timer for model check and capture startup model
 	SetTimerEx(1, 10902, player, -1);
 
 	// Start "Bountyhunt" after delay
@@ -52,8 +52,8 @@ startup:
 		// Start bountyhunt timer
 		SetTimerEx(3, 10901, player, -1);
 	} else {
-	        // indicate player joined (so deagles pup can be set if needed)
-	        SetTimerEx(2, 10904, player, -1);
+		// indicate player joined (so deagles pup can be set if needed)
+		SetTimerEx(2, 10904, player, -1);
 	}
 
 
@@ -70,7 +70,7 @@ killed:
 	// Only forward kill messages of local player
 	victim = GetSenderRef();
 	if ( victim == GetLocalPlayerThing() ) {
- 	   SendTrigger(-1, 10912, GetThingParent(GetSourceRef()), victim, -1, -1);
+		SendTrigger(-1, 10912, GetThingParent(GetSourceRef()), victim, -1, -1);
 	}
 
 	Return;
@@ -80,7 +80,7 @@ killed:
 timer:
 	player = GetParam(0);
 
-        // Start bountyhunt timer
+	// Start bountyhunt timer
 	if(GetSenderId() == 10901)
 		SendTrigger(-1, 10911, player, -1, -1, -1);
 
@@ -98,18 +98,18 @@ timer:
 		}
 		else
 		{
-	                startupModel = GetThingModel(player);
-	        }
-	        SetThingPulse(player, 0.1);
+			startupModel = GetThingModel(player);
+		}
+		SetThingPulse(player, 0.1);
 	}
 
 	// Double call prevention timer
 	if(GetSenderId() == 10903)
 		doubleCall = 0;
 
-        // new client join timer
-        if(GetSenderId() == 10904)
-                SendTrigger(-1, 13372, player, 0, 0, 0);
+	// new client join timer
+	if(GetSenderId() == 10904)
+		SendTrigger(-1, 13372, player, 0, 0, 0);
 
 	Return;
 
@@ -121,7 +121,7 @@ pulse:
 
    // reset player model if not Mr Time
    if( (GetInv(player, 123) == 0.0) && GetThingModel(player) != startupModel ) {
-       SetThingModel(player, startupModel);
+   	SetThingModel(player, startupModel);
    }
 
    Return;
@@ -166,15 +166,15 @@ trigger:
 			SetInv(newMrTime, 125, 0.0); //raffaello
 			SetInv(newMrTime, 126, 0.0); //double deagles
 
-                        SetInv(newMrTime, 21, 8); // enable high jump
-                        SetInvAvailable(newMrTime, 21, 1);
+			SetInv(newMrTime, 21, 8); // enable high jump
+			SetInvAvailable(newMrTime, 21, 1);
 
 			SetFireWait(newMrTime, -1);
    			SetMountWait(newMrTime, 0);
    			SetCurInvWeapon(newMrTime, 0);
 
    			// Set BT amount
-                        SetInv(newMrTime, 116, 15);
+			SetInv(newMrTime, 116, 15);
 		}
 		else
 		{
@@ -182,7 +182,7 @@ trigger:
 			SetInv(GetLocalPlayerThing(), 123, 0.0);
 		}
 
-                // Locally print new Mr Time text message
+		// Locally print new Mr Time text message
 		jkStringClear();
 		jkStringConcatPlayerName(newMrTime);
 		jkStringConcatAsciiString(" is now Mr Time!");
@@ -190,10 +190,10 @@ trigger:
 	}
 	
 	// Sync newMrTime variable trigger (trigger message) WITHOUT changing who is Mr Time.
-        // Used to update animations when new player joins (for new player only).
+	// Used to update animations when new player joins (for new player only).
 	if(GetSourceRef() == 10941 && killer == GetLocalPlayerThing())
 	{
-	        newMrTime = GetParam(1);
+		newMrTime = GetParam(1);
 
 		// Print who is the new Mr Time
 		jkStringClear();
@@ -208,8 +208,8 @@ trigger:
 		Return;
 
 	if(GetSourceRef() == 13372) { // a player joined
-                // on server, broadcast who is mr time (broadcast intended for the new player)
-                SendTrigger(-1, 10941, killer, newMrTime, 0, 0);
+		// on server, broadcast who is mr time (broadcast intended for the new player)
+		SendTrigger(-1, 10941, killer, newMrTime, 0, 0);
 	}
 
 	// New Mr Time trigger (startup message)
@@ -246,15 +246,15 @@ trigger:
 			// Mr Time suicide
 			if(victim == newMrTime)
 			{
-                              if(GetNumPlayers() > 1)
-                              {
-                                   // Get new random Mr Time
+			      if(GetNumPlayers() > 1)
+			      {
+				   // Get new random Mr Time
 				   rIndex = Rand() * GetNumPlayers();
 				   // while index out of bounds or chose the original Mr Time, try again
 				   while( (rIndex == GetNumPlayers()) || ( (GetNumPlayers() > 1) && (GetPlayerThing(rIndex) == victim) ) )
 					rIndex = Rand() * GetNumPlayers();
 				   killer = GetPlayerThing(rIndex);
-                              }
+			      }
 			}
 		}
 
@@ -298,8 +298,8 @@ trigger:
 			// Warning beep global
 			PlaySoundGlobal(warning, 1, 0, 0x4);
 
-                        // Turn off the Killing Time
-	                SendTrigger(-1, 13370, 0, 0, 0, 0);
+			// Turn off the Killing Time
+			SendTrigger(-1, 13370, 0, 0, 0, 0);
 		}
 	}
 
@@ -308,7 +308,7 @@ trigger:
 	{
 		// Get new random Mr Time
 		rIndex = Rand() * GetNumPlayers();
-	        // while index out of bounds or chose the original Mr Time, try again
+		// while index out of bounds or chose the original Mr Time, try again
 		while( rIndex == GetNumPlayers() || (GetNumPlayers() > 1 && GetPlayerThing(rIndex) == victim) )
 			rIndex = Rand() * GetNumPlayers();
 		killer = GetPlayerThing(rIndex);
