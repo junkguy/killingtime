@@ -56,12 +56,13 @@ sound       m4mountSound=m4mntsnd.wav         local
 
 int         isPulsing         local
 
-template    ugw1=+m4bullet                 local
-template    rifleshell=+rifleshell                 local
-sound       ugwsnd=m4shoot.wav              local
+template    m4bullet=+m4bullet                 local
+template    m4bullet_nohole=+m4bullet_nohole   local
+template    rifleshell=+rifleshell             local
+sound       ugwsnd=m4shoot.wav               local
 int         ugwperson                        local
 vector      randVec6                         local          
-vector      randDir6                         local   
+vector      randDir6                         local
 
 message		trigger
 message		pulse
@@ -163,7 +164,11 @@ FireProjectile(ugwperson, rifleshell, -1, -1, '0.02 0.044 0.02', randDir6, 1, 0x
 
 randVec6 = VectorSet((Rand()-0.5)*1.0, (Rand()-0.5)*1.0, 0.0);
 
-	FireProjectile(ugwperson, ugw1, -1, -1, '0.0145 0.1024 0.027', randVec6, 1, 0x20, -1, -1);
+        	if(ugwperson == GetLocalPlayerThing()) {
+			FireProjectile(ugwperson, m4bullet, -1, -1, '0.0145 0.1024 0.027', randVec6, 1, 0x20, -1, -1);
+		} else {
+			FireProjectile(ugwperson, m4bullet_nohole, -1, -1, '0.0145 0.1024 0.027', randVec6, 1, 0x20, -1, -1);
+		}
 
 PlayMode(ugwperson, 8);
 
@@ -205,7 +210,12 @@ FireProjectile(ugwperson, rifleshell, -1, -1, '0.02 0.044 0.02', randDir6, 1, 0x
 
 randVec6 = VectorSet((Rand()-0.5)*1.0, (Rand()-0.5)*1.0, 0.0);
 
-	FireProjectile(ugwperson, ugw1, -1, -1, '0.0145 0.1024 0.027', randVec6, 1, 0x20, -1, -1);
+		if(ugwperson == GetLocalPlayerThing()) {
+			FireProjectile(ugwperson, m4bullet, -1, -1, '0.0145 0.1024 0.027', randVec6, 1, 0x20, -1, -1);
+		} else {
+			FireProjectile(ugwperson, m4bullet_nohole, -1, -1, '0.0145 0.1024 0.027', randVec6, 1, 0x20, -1, -1);
+		}
+
 
 PlayMode(ugwperson, 8);
 
