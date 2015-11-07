@@ -22,6 +22,11 @@ thing          dummy5                              local
 thing          dummy6                              local  
 thing          dummy7                              local  
 
+int             shooter                  local
+int		bullet			local
+int		victim			local
+flex		Vertical		local
+
 int		damagerthing				local
 int		removerthing				local
 
@@ -58,9 +63,9 @@ created:
 bulletvel = GetThingVel(GetSenderRef());
 Return;
 
-touched:
 
-//randVec6 = VectorSet((Rand()-0.5)*60.0, (Rand()-0.5)*60.0, 0.0);
+
+touched:
 
 randVec6 = VectorSet(0.0, (Rand()-0.5)*2, (Rand()-0.5)*2);
 dummy4 = FireProjectile(GetSourceRef(), projectile4, -1, -1, '0.0 0.0 0.0', '0 0 0', 1, 0x20, -1, -1);
@@ -87,6 +92,46 @@ SetThingVel(dummy7, VectorAdd(bulletvel, randVec6));
 randVec6 = VectorSet(0.0, (Rand()-0.5)*2, (Rand()-0.5)*2);
 dummy8 = FireProjectile(GetSourceRef(), projectile5, -1, -1, '0.0 0.0 0.0', '0 0 0', 1, 0x20, -1, -1);
 SetThingVel(dummy8, VectorAdd(bulletvel, randVec6));
+
+
+
+victim = GetSourceRef();
+if(GetThingHealth(victim) == 0) return;
+bullet = GetSenderRef();
+shooter = GetThingParent(bullet);
+
+Vertical = VectorZ(GetThingPos(bullet)) - VectorZ(GetThingPos(victim));
+
+		if(Vertical >= 0.033)
+		{
+			if(VectorDot(GetThingLVec(bullet),GetThingLVec(victim)) < 0) {
+				Print("-- Shot in the FACE! --");
+			} else {
+				Print("-- Shot in the HEAD! --");
+			}
+		}
+		else if( (Vertical < 0.033) && (Vertical >= 0.015) )
+		{
+			if( VectorDot( VectorSub(GetThingPos(bullet),GetThingPos(victim)) , VectorCross(GetThingLVec(victim),VectorSet(0.0,0.0,1.0)) ) < 0 )
+				Print("-- Shot in the left shoulder! --");
+			else
+				Print("-- Shot in the right shoulder! --");
+		}
+		else if( (Vertical < 0.015) && (Vertical > -0.02) )
+		{
+			if( VectorDot(GetThingLVec(bullet),GetThingLVec(victim)) < 0 )
+				Print("-- Shot in the chest! --");
+			else
+				Print("-- Shot in the back! --");
+		}
+		else if(Vertical <= -0.02)
+		{
+			if( VectorDot( VectorSub(GetThingPos(bullet),GetThingPos(victim)) , VectorCross(GetThingLVec(victim),VectorSet(0.0,0.0,1.0)) ) < 0 )
+			        Print("-- Shot in the left leg! --");
+			else
+				Print("-- Shot in the right leg! --");
+		}
+
 
 Return;
 
