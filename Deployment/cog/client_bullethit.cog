@@ -1,0 +1,60 @@
+# Jedi Knight Cog Script
+#
+# by ID_Junkguy for Killing Time mod
+
+flags=0x240
+
+symbols
+
+message     trigger
+
+int             shooter                  local
+int		bullet			local
+int		victim			local
+flex		damage			local
+flex		Vertical		local
+
+end
+
+# ========================================================================================
+
+code
+
+
+trigger:
+	shooter = GetParam(0);
+	victim = GetParam(1);
+	damage = GetParam(2);
+
+	if( (GetSourceRef() >= 11000) && (GetSourceRef() <= 11007) ) {
+		if(damage >= GetThingHealth(victim)) {
+			if( (GetSourceRef() == 11000) || (GetSourceRef() == 11001) ) {
+				// remove head and neck
+			    	AmputateJoint(victim, 1);
+				AmputateJoint(victim, 0);
+			} else if(GetSourceRef() == 11002) {
+				// remove left shoulder
+			    	AmputateJoint(victim, 6);
+			} else if(GetSourceRef() == 11003) {
+				// remove right shoulder
+			    	AmputateJoint(victim, 5);
+			}
+		}
+
+		// force damage to prevent shields etc affecting it
+		DamageThing(victim, damage, 0x8, shooter);
+
+		jkStringClear();
+		jkStringConcatPlayerName(shooter);
+		jkStringConcatAsciiString(" shot ");
+		jkStringConcatPlayerName(victim);
+		jkStringConcatAsciiString(" with damage ");
+		jkStringConcatFlex(damage);
+		jkStringOutput(victim, -1);
+	}
+Return;
+
+
+end
+
+

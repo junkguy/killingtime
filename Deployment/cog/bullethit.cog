@@ -21,11 +21,13 @@ thing          dummy4                              local
 thing          dummy5                              local 
 thing          dummy6                              local  
 thing          dummy7                              local  
+thing          dummy8                              local 
 
 int             shooter                  local
 int		bullet			local
 int		victim			local
 flex		Vertical		local
+flex		damage				local
 
 int		damagerthing				local
 int		removerthing				local
@@ -35,6 +37,12 @@ template	 projectile2=+upsparks        	local
 template	 projectile3=+smallpuff        	local
 template	 projectile4=+blooddrop             	local
 template	 projectile5=+exitbullet             	local
+
+template	shotgunbullet=+shotgunbullet	local
+template	deaglebullet=+deaglebullet	local
+template	m4bullet=+m4bullet		local
+
+template	bullettemplate			local
 
 end
 
@@ -96,40 +104,60 @@ SetThingVel(dummy8, VectorAdd(bulletvel, randVec6));
 
 
 victim = GetSourceRef();
-if(GetThingHealth(victim) == 0) return;
+if(GetThingHealth(victim) == 0) Return;
 bullet = GetSenderRef();
 shooter = GetThingParent(bullet);
+
+bullettemplate = GetThingTemplate(bullet);
+if(bullettemplate == shotgunbullet) {
+	damage = 30;
+} else if(bullettemplate == m4bullet) {
+	damage = 40;
+} else if(bullettemplate == deaglebullet) {
+	damage = 50;
+}
 
 Vertical = VectorZ(GetThingPos(bullet)) - VectorZ(GetThingPos(victim));
 
 		if(Vertical >= 0.033)
 		{
 			if(VectorDot(GetThingLVec(bullet),GetThingLVec(victim)) < 0) {
-				Print("-- Shot in the FACE! --");
+				// face
+				SendTrigger(-1, 11000, shooter, victim, damage*3, -1);
 			} else {
-				Print("-- Shot in the HEAD! --");
+				// head
+				SendTrigger(-1, 11001, shooter, victim, damage*3, -1);
 			}
 		}
 		else if( (Vertical < 0.033) && (Vertical >= 0.015) )
 		{
-			if( VectorDot( VectorSub(GetThingPos(bullet),GetThingPos(victim)) , VectorCross(GetThingLVec(victim),VectorSet(0.0,0.0,1.0)) ) < 0 )
-				Print("-- Shot in the left shoulder! --");
-			else
-				Print("-- Shot in the right shoulder! --");
+			if( VectorDot( VectorSub(GetThingPos(bullet),GetThingPos(victim)) , VectorCross(GetThingLVec(victim),VectorSet(0.0,0.0,1.0)) ) < 0 ) {
+				// left shoulder
+				SendTrigger(-1, 11002, shooter, victim, damage*0.7, -1);
+			} else {
+				// right shoulder
+				SendTrigger(-1, 11003, shooter, victim, damage*0.7, -1);
+			}
 		}
 		else if( (Vertical < 0.015) && (Vertical > -0.02) )
 		{
-			if( VectorDot(GetThingLVec(bullet),GetThingLVec(victim)) < 0 )
-				Print("-- Shot in the chest! --");
-			else
-				Print("-- Shot in the back! --");
+			if( VectorDot(GetThingLVec(bullet),GetThingLVec(victim)) < 0 ) {
+				// chest
+				SendTrigger(-1, 11004, shooter, victim, damage, -1);
+			} else {
+				// back
+				SendTrigger(-1, 11005, shooter, victim, damage*2, -1);
+			}
 		}
 		else if(Vertical <= -0.02)
 		{
-			if( VectorDot( VectorSub(GetThingPos(bullet),GetThingPos(victim)) , VectorCross(GetThingLVec(victim),VectorSet(0.0,0.0,1.0)) ) < 0 )
-			        Print("-- Shot in the left leg! --");
-			else
-				Print("-- Shot in the right leg! --");
+			if( VectorDot( VectorSub(GetThingPos(bullet),GetThingPos(victim)) , VectorCross(GetThingLVec(victim),VectorSet(0.0,0.0,1.0)) ) < 0 ) {
+			        // left leg
+                                SendTrigger(-1, 11006, shooter, victim, damage*0.7, -1);
+			} else {
+				// right leg
+				SendTrigger(-1, 11007, shooter, victim, damage*0.7, -1);
+			}
 		}
 
 
