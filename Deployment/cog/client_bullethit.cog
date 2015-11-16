@@ -30,15 +30,17 @@ trigger:
 		
 		if ( (GetSourceRef() == 11000) || (GetSourceRef() == 11001) ) {
 			// head or face shot
-			if(damage >= GetThingHealth(victim)) {
+			
+			// TODO restore head after respawn
+			// if(damage >= GetThingHealth(victim)) {
 				// if dead, remove head and neck
-				AmputateJoint(victim, 1);
-				AmputateJoint(victim, 0);
+			 	// AmputateJoint(victim, 1);
+				// AmputateJoint(victim, 0);
+			// }
 
-				// TODO add headshot sounds
-			}
 			// force damage to prevent shields etc affecting it
 			DamageThing(victim, damage, 0x8, shooter);
+			// TODO add headshot sounds
 		} else {
 			DamageThing(victim, damage, 0x2, shooter);
 		}
