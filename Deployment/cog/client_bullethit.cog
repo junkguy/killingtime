@@ -52,7 +52,10 @@ trigger:
 				PlaySoundThing(headshot_head, victim, 1.0, -1, -1, 0x180);
 			}
 			// force damage to prevent shields etc affecting it
-			DamageThing(victim, damage, 0x8, shooter);
+			// headshots affect SP AI and MP local player
+			if (!IsMulti() || victim == GetLocalPlayerThing()) {
+				DamageThing(victim, damage, 0x8, shooter);
+			}
 		} else {
 			// body or limb shot
 			random = Rand();
@@ -63,7 +66,10 @@ trigger:
 			} else {
 				PlaySoundThing(damage3, victim, 1.0, -1, -1, 0x180);
 			}
-			DamageThing(victim, damage, 0x2, shooter);
+			// body shots affect only MP local player
+			if (IsMulti() && victim == GetLocalPlayerThing()) {
+				DamageThing(victim, damage, 0x2, shooter);
+			}
 		}
 
 		//jkStringClear();
