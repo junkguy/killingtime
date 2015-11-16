@@ -8,7 +8,7 @@ symbols
 
 message     trigger
 
-int             shooter                  local
+int             shooter                 local
 int		bullet			local
 int		victim			local
 flex		damage			local
@@ -27,22 +27,21 @@ trigger:
 	damage = GetParam(2);
 
 	if( (GetSourceRef() >= 11000) && (GetSourceRef() <= 11007) ) {
-		if(damage >= GetThingHealth(victim)) {
-			if( (GetSourceRef() == 11000) || (GetSourceRef() == 11001) ) {
-				// remove head and neck
-			    	AmputateJoint(victim, 1);
+		
+		if ( (GetSourceRef() == 11000) || (GetSourceRef() == 11001) ) {
+			// head or face shot
+			if(damage >= GetThingHealth(victim)) {
+				// if dead, remove head and neck
+				AmputateJoint(victim, 1);
 				AmputateJoint(victim, 0);
-			} else if(GetSourceRef() == 11002) {
-				// remove left shoulder
-			    	AmputateJoint(victim, 6);
-			} else if(GetSourceRef() == 11003) {
-				// remove right shoulder
-			    	AmputateJoint(victim, 5);
-			}
-		}
 
-		// force damage to prevent shields etc affecting it
-		DamageThing(victim, damage, 0x8, shooter);
+				// TODO add headshot sounds
+			}
+			// force damage to prevent shields etc affecting it
+			DamageThing(victim, damage, 0x8, shooter);
+		} else {
+			DamageThing(victim, damage, 0x2, shooter);
+		}
 
 		jkStringClear();
 		jkStringConcatPlayerName(shooter);
