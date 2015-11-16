@@ -104,7 +104,6 @@ SetThingVel(dummy8, VectorAdd(bulletvel, randVec6));
 
 
 victim = GetSourceRef();
-if(GetThingHealth(victim) == 0) Return;
 bullet = GetSenderRef();
 shooter = GetThingParent(bullet);
 
