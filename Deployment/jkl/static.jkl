@@ -229,12 +229,12 @@ _uweapon          none             orient=(0.000000/0.000000/0.000000) type=weap
 +basebullethit    +basebullethit_nohole  debris=+basebullethole
 +basebullet       _uweapon               thingflags=0x20000001 light=0.400000 model3d=str0.3do size=0.010000 movesize=0.010000 creatething=+ulgflash vel=(0.000000/10.000000/0.000000) explode=+basebullethit fleshhit=+bullethitflesh damage=35.000000 mindamage=30.000000 damageclass=0x2 typeflags=0x20440d rate=1.000000 range=15.000000 cog=bullethit.cog
 
-+m4bullet         +basebullet            vel=(0.000000/11.000000/0.000000) damage=1.000000 mindamage=1.000000
-+m4bullet_nohole       +m4bullet         explode=+basebullethit_nohole cog=bullethit_nodamage.cog
-+deaglebullet     +basebullet            vel=(0.000000/9.000000/0.000000) damage=1.000000 mindamage=1.000000
-+deaglebullet_nohole   +deaglebullet     explode=+basebullethit_nohole cog=bullethit_nodamage.cog
-+shotgunbullet    +basebullet            vel=(0.000000/9.000000/0.000000) damage=1.000000 mindamage=1.000000
-+shotgunbullet_nohole  +shotgunbullet    explode=+basebullethit_nohole cog=bullethit_nodamage.cog
++m4bullet         +basebullet            vel=(0.000000/11.000000/0.000000) damage=45.000000 mindamage=35.000000
++m4bullet_nohole       +m4bullet         explode=+basebullethit_nohole cog=bullethit_nodamage.cog damage=1.000000 mindamage=1.000000
++deaglebullet     +basebullet            vel=(0.000000/9.000000/0.000000) damage=55.000000 mindamage=30.000000
++deaglebullet_nohole   +deaglebullet     explode=+basebullethit_nohole cog=bullethit_nodamage.cog damage=1.000000 mindamage=1.000000
++shotgunbullet    +basebullet            vel=(0.000000/9.000000/0.000000) damage=40.000000 mindamage=25.000000
++shotgunbullet_nohole  +shotgunbullet    explode=+basebullethit_nohole cog=bullethit_nodamage.cog damage=1.000000 mindamage=1.000000
 
 _vmodels           none        orient=(0.000000/0.000000/0.000000) type=actor collide=1 move=physics thingflags=0x20000000 mass=150.000000 physflags=0x4a4f maxrotvel=200.000000 maxvel=1.000000 health=40.00 maxhealth=40.00 maxrotthrust=180.00 jumpspeed=1.50 eyeoffset=(0.000000/0.000000/0.037000) minheadpitch=-80.00 maxheadpitch=89.50 lightoffset=(0.000000/0.070000/0.040000) lightintensity=0.80
 +deagletemp       _vmodels       model3d=strv.3do collide=0  puppet=ky.pup typeflags=0x1 thingflags=0x20000400 cog=weaponpulse.cog
