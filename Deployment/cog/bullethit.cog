@@ -75,6 +75,10 @@ Return;
 
 touched:
 
+if(GetThingFlags(GetSourceRef()) & 0x8) {
+	Return;
+}
+
 randVec6 = VectorSet(0.0, (Rand()-0.5)*2, (Rand()-0.5)*2);
 dummy4 = FireProjectile(GetSourceRef(), projectile4, -1, -1, '0.0 0.0 0.0', '0 0 0', 1, 0x20, -1, -1);
 SetThingVel(dummy4, VectorAdd(bulletvel, randVec6));
