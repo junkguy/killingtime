@@ -1,0 +1,102 @@
+# Jedi Knight Cog Script
+#
+# by ID_Junkguy for Killing Time mod
+
+flags=0x240
+
+symbols
+
+message     damaged
+message     removed
+message     created
+message     touched
+
+vector       bulletvel                        local
+vector	 randvec6				    local
+
+thing          dummy                              local    
+thing          dummy2                              local    
+thing          dummy3                              local    
+thing          dummy4                              local   
+thing          dummy5                              local 
+thing          dummy6                              local  
+thing          dummy7                              local
+thing          dummy8                              local
+
+int             shooter                  local
+int		bullet			local
+int		victim			local
+flex		Vertical		local
+
+int		damagerthing				local
+int		removerthing				local
+
+template	 projectile1=+reactionsparks        	local
+template	 projectile2=+upsparks        	local
+template	 projectile3=+smallpuff        	local
+template	 projectile4=+blooddrop             	local
+template	 projectile5=+exitbullet             	local
+
+end
+
+# ========================================================================================
+
+code
+
+damaged:
+damagerthing=GetSenderRef();
+Return;
+
+removed:
+removerthing=GetSenderRef();
+if(damagerthing != removerthing)
+{
+dummy = FireProjectile(removerthing, projectile1, -1, -1, '0.0 0.0 0.0', '0 0 0', 1, 0x20, -1, -1);
+dummy2 = FireProjectile(removerthing, projectile2, -1, -1, '0.0 0.0 0.0', '0 0 0', 1, 0x20, -1, -1);
+}
+else
+{
+dummy3 = FireProjectile(removerthing, projectile3, -1, -1, '0.0 0.0 0.0', '0 0 0', 1, 0x20, -1, -1);
+}
+Return;
+
+created:
+bulletvel = GetThingVel(GetSenderRef());
+Return;
+
+
+
+touched:
+
+randVec6 = VectorSet(0.0, (Rand()-0.5)*2, (Rand()-0.5)*2);
+dummy4 = FireProjectile(GetSourceRef(), projectile4, -1, -1, '0.0 0.0 0.0', '0 0 0', 1, 0x20, -1, -1);
+SetThingVel(dummy4, VectorAdd(bulletvel, randVec6));
+
+randVec6 = VectorSet(0.0, (Rand()-0.5)*2, (Rand()-0.5)*2);
+dummy5 = FireProjectile(GetSourceRef(), projectile4, -1, -1, '0.0 0.0 0.0', '0 0 0', 1, 0x20, -1, -1);
+SetThingVel(dummy5, VectorAdd(bulletvel, randVec6));
+
+if(Rand()<0.9)
+{
+randVec6 = VectorSet(0.0, (Rand()-0.5)*2, (Rand()-0.5)*2);
+dummy6 = FireProjectile(GetSourceRef(), projectile4, -1, -1, '0.0 0.0 0.0', '0 0 0', 1, 0x20, -1, -1);
+SetThingVel(dummy6, VectorAdd(bulletvel, randVec6));
+}
+
+if(Rand()<0.8)
+{
+randVec6 = VectorSet(0.0, (Rand()-0.5)*2, (Rand()-0.5)*2);
+dummy7 = FireProjectile(GetSourceRef(), projectile4, -1, -1, '0.0 0.0 0.0', '0 0 0', 1, 0x20, -1, -1);
+SetThingVel(dummy7, VectorAdd(bulletvel, randVec6));
+}
+
+randVec6 = VectorSet(0.0, (Rand()-0.5)*2, (Rand()-0.5)*2);
+dummy8 = FireProjectile(GetSourceRef(), projectile5, -1, -1, '0.0 0.0 0.0', '0 0 0', 1, 0x20, -1, -1);
+SetThingVel(dummy8, VectorAdd(bulletvel, randVec6));
+
+Return;
+
+
+end
+
+

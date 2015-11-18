@@ -1,0 +1,88 @@
+# Jedi Knight Cog Script
+#
+# by ID_Junkguy for Killing Time mod
+
+flags=0x240
+
+symbols
+
+message     trigger
+
+int             shooter                 local
+int		bullet			local
+int		victim			local
+
+flex		random			local
+flex		damage			local
+flex		Vertical		local
+
+sound		headshot_face=headshot_face.wav	local
+sound		headshot_head=headshot_head.wav	local
+
+sound		damage1=damage1.wav	local
+sound		damage2=damage2.wav	local
+sound		damage3=damage3.wav	local
+
+end
+
+# ========================================================================================
+
+code
+
+
+trigger:
+	shooter = GetParam(0);
+	victim = GetParam(1);
+	damage = GetParam(2);
+
+	if( (GetSourceRef() >= 11000) && (GetSourceRef() <= 11007) ) {
+		if ( (GetSourceRef() == 11000) || (GetSourceRef() == 11001) ) {
+			// head or face shot
+			// if(damage >= GetThingHealth(victim)) {
+				// if dead, remove head and neck
+				// TODO restore head after respawn
+				// AmputateJoint(victim, 1);
+				// AmputateJoint(victim, 0);
+			// }
+                        if (GetSourceRef() == 11000) {
+				// face
+				PlaySoundThing(headshot_face, victim, 1.0, -1, -1, 0x180);
+			} else {
+				// head
+				PlaySoundThing(headshot_head, victim, 1.0, -1, -1, 0x180);
+			}
+			// force damage to prevent shields etc affecting it
+			// headshots affect SP AI and MP local player
+			if (!IsMulti() || victim == GetLocalPlayerThing()) {
+				DamageThing(victim, damage, 0x8, shooter);
+			}
+		} else {
+			// body or limb shot
+			random = Rand();
+			if (random < 0.33) {
+				PlaySoundThing(damage1, victim, 1.0, -1, -1, 0x180);
+			} else if (random < 0.66) {
+				PlaySoundThing(damage2, victim, 1.0, -1, -1, 0x180);
+			} else {
+				PlaySoundThing(damage3, victim, 1.0, -1, -1, 0x180);
+			}
+			// body shots affect only MP local player
+			if (IsMulti() && victim == GetLocalPlayerThing()) {
+				DamageThing(victim, damage, 0x2, shooter);
+			}
+		}
+
+		//jkStringClear();
+		//jkStringConcatPlayerName(shooter);
+		//jkStringConcatAsciiString(" shot ");
+		//jkStringConcatPlayerName(victim);
+		//jkStringConcatAsciiString(" with damage ");
+		//jkStringConcatFlex(damage);
+		//jkStringOutput(victim, -1);
+	}
+Return;
+
+
+end
+
+

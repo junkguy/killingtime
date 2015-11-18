@@ -10,9 +10,12 @@ flags=0x240
 
 symbols
 
-flex        random                           local
-template    ugw1=+deaglebullet                 local
-template    shotgunbullet=+shotgunbullet                 local
+flex        random                                      local
+template    deaglebullet=+deaglebullet                  local
+template    deaglebullet_nohole=+deaglebullet_nohole    local
+template    shotgunbullet=+shotgunbullet                local
+template    shotgunbullet_nohole=+shotgunbullet_nohole  local
+
 template    bulletshell=+bulletshell                 local
 template    rifleshell=+rifleshell                 local
 template    shotgunshell=+shotgunshell             local
@@ -65,8 +68,11 @@ thesource=GetSourceRef();
 
 		randVec6 = VectorSet((Rand()-0.5)*1.0, (Rand()-0.5)*1.0, 0.0);
 
-		FireProjectile(player, ugw1, -1, -1, '0.0145 0.0624 0.028', randVec6, 1, 0x20, -1, -1);
-
+                if(player == GetLocalPlayerThing()) {
+			FireProjectile(player, deaglebullet, -1, -1, '0.0145 0.0624 0.028', randVec6, 1, 0x20, -1, -1);
+		} else {
+			FireProjectile(player, deaglebullet_nohole, -1, -1, '0.0145 0.0624 0.028', randVec6, 1, 0x20, -1, -1);
+		}
 
 		channel = PlaySoundThing(defireSound, player, 0.0, -1, -1, 0x180);
 		if(channel != -1)
@@ -110,7 +116,11 @@ player=GetParam(0);
 randDir6 = VectorSet((Rand()-0.5)*15, ((Rand()-0.5)*15)+90, 0.0);
 FireProjectile(player, bulletshell, -1, -1, '0.025 0.08 0.035', randDir6, 1, 0x20, -1, -1);
 randVec6 = VectorSet((Rand()-0.5)*5.0, (Rand()-0.5)*5.0, 0.0);
-FireProjectile(player, ugw1, -1, -1, '0.025 0.09 0.025', randVec6, 1, 0x20, -1, -1);
+if(player == GetLocalPlayerThing()) {
+	FireProjectile(player, deaglebullet, -1, -1, '0.025 0.09 0.025', randVec6, 1, 0x20, -1, -1);
+} else {
+	FireProjectile(player, deaglebullet_nohole, -1, -1, '0.025 0.09 0.025', randVec6, 1, 0x20, -1, -1);
+}
 
 channel = PlaySoundThing(defireSound, player, 0.0, -1, -1, 0x180);
 if(channel != -1)
@@ -126,7 +136,11 @@ Sleep(0.1);
 randDir6 = VectorSet((Rand()-0.5)*15, ((Rand()-0.5)*15)+90, 0.0);
 FireProjectile(player, bulletshell, -1, -1, '-0.025 0.08 0.035', randDir6, 1, 0x20, -1, -1);
 randVec6 = VectorSet((Rand()-0.5)*5.0, (Rand()-0.5)*5.0, 0.0);
-FireProjectile(player, ugw1, -1, -1, '-0.025 0.09 0.025', randVec6, 1, 0x20, -1, -1);
+if(player == GetLocalPlayerThing()) {
+	FireProjectile(player, deaglebullet, -1, -1, '-0.025 0.09 0.025', randVec6, 1, 0x20, -1, -1);
+} else {
+	FireProjectile(player, deaglebullet_nohole, -1, -1, '-0.025 0.09 0.025', randVec6, 1, 0x20, -1, -1);
+}
 
 channel = PlaySoundThing(defireSound, player, 0.0, -1, -1, 0x180);
 if(channel != -1)
@@ -205,9 +219,12 @@ else if(thesource == 34) // clear model andor pup from deagles
                 for(i=0; i<9; i=i+1)
 		{
 			randVec6 = VectorSet((Rand()-0.5)*6.0, (Rand()-0.5)*6.0, 0.0);
-			FireProjectile(player, shotgunbullet, -1, -1, '0.013 0.0624 0.028', randVec6, 1, 0x20, -1, -1);
+			if(player == GetLocalPlayerThing()) {
+				FireProjectile(player, shotgunbullet, -1, -1, '0.013 0.0624 0.028', randVec6, 1, 0x20, -1, -1);
+			} else {
+				FireProjectile(player, shotgunbullet_nohole, -1, -1, '0.013 0.0624 0.028', randVec6, 1, 0x20, -1, -1);
+			}
 		}
-
 
 		channel = PlaySoundThing(raffireSound, player, 0.0, -1, -1, 0x180);
 		if(channel != -1)
