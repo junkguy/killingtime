@@ -233,7 +233,7 @@ _uweapon          none             orient=(0.000000/0.000000/0.000000) type=weap
 +m4bullet_nohole       +m4bullet         explode=+basebullethit_nohole cog=bullethit_nodamage.cog damage=1.000000 mindamage=1.000000
 +deaglebullet     +basebullet            vel=(0.000000/18.000000/0.000000) damage=55.000000 mindamage=30.000000
 +deaglebullet_nohole   +deaglebullet     explode=+basebullethit_nohole cog=bullethit_nodamage.cog damage=1.000000 mindamage=1.000000
-+shotgunbullet    +basebullet            vel=(0.000000/15.000000/0.000000) damage=40.000000 mindamage=25.000000
++shotgunbullet    +basebullet            vel=(0.000000/15.000000/0.000000) damage=40.000000 mindamage=25.000000 model3d=buckshot.3do
 +shotgunbullet_nohole  +shotgunbullet    explode=+basebullethit_nohole cog=bullethit_nodamage.cog damage=1.000000 mindamage=1.000000
 
 _vmodels           none        orient=(0.000000/0.000000/0.000000) type=actor collide=1 move=physics thingflags=0x20000000 mass=150.000000 physflags=0x4a4f maxrotvel=200.000000 maxvel=1.000000 health=40.00 maxhealth=40.00 maxrotthrust=180.00 jumpspeed=1.50 eyeoffset=(0.000000/0.000000/0.037000) minheadpitch=-80.00 maxheadpitch=89.50 lightoffset=(0.000000/0.070000/0.040000) lightintensity=0.80
